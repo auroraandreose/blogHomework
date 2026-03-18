@@ -24,22 +24,32 @@
         <div class="container-centrato">
             <h1>Homework 1</h1>
             
-          <section id="application">
+         <section id="application">
     <div class="description">
         <h3>1. Application: Varie Manipolazioni del DOM</h3>
+        
         <p>
-            In questa sezione vengono testate diverse tipologie di interazione con gli elementi HTML tramite uno script esterno:
+            Il <strong>DOM (Document Object Model)</strong> è l'interfaccia di programmazione che permette a JavaScript di accedere e manipolare dinamicamente il contenuto, la struttura e lo stile dei documenti HTML. 
         </p>
 
-        <div id="box" style="transition: all 0.4s ease; min-height: 150px;">
+        <div id="box" style="transition: all 0.4s ease; min-height: 150px; padding: 25px; border: 1px solid #ddd; border-radius: 8px; background: white;">
             <p id="testo-dinamico">Elemento target per le manipolazioni.</p>
         </div>
 
-        <div class="controls" style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap;">
+        <div class="controls" style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
             <button onclick="cambiaContenuto()">Modifica Testo</button>
             <button onclick="cambiaColore()">Cambia Colore</button>
             <button onclick="aggiungiElemento()">Aggiungi Elemento</button>
             <button onclick="resetBox()">Reset</button>
+        </div>
+
+        <div style="margin-top: 30px; text-align: left; background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.9rem;">
+            <p style="color: #d19a66; margin-top: 0;">// Esempio di manipolazione della struttura in JS:</p>
+            <code>
+                const nuovo = document.createElement("p"); <br>
+                nuovo.innerText = "Nuovo elemento"; <br>
+                box.appendChild(nuovo);
+            </code>
         </div>
     </div>
 </section>

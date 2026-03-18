@@ -4,19 +4,19 @@
     <meta charset="UTF-8">
     <title>Homework 1 - Aurora Andreose</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>Menu</h2>
-        
+        <h2>Menù</h2>
         <a href="index.html" class="home-link">Home</a>
-
         <div class="dropdown">
             <button class="dropbtn">Homework ▼</button>
             <div class="dropdown-content">
                 <a href="hw1.html">Homework 1</a>
-                </div>
+            </div>
         </div>
     </div>
 
@@ -24,79 +24,95 @@
         <div class="container-centrato">
             <h1>Homework 1</h1>
             
-         <section id="application">
-    <div class="description">
-        <h3>1. Application</h3>
-        
-        <div id="box" style="transition: all 0.3s; min-height: 100px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: white; margin-bottom: 20px;">
-            <p id="testo-dinamico">In attesa di interazione...</p>
-        </div>
+            <section id="application">
+                <div class="description">
+                    <h3>1. Application: Manipolazioni del DOM</h3>
+                    <p>In questa sezione dimostro come JavaScript possa interagire con gli elementi della pagina tramite script esterno.</p>
 
-        <div class="controls" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px;">
-            <button onclick="cambiaContenuto()">Cambia Testo</button>
-            <button onclick="cambiaColore()">Cambia Stile</button>
-            <button onclick="aggiungiElemento()">Aggiungi Nodo</button>
-            <button onclick="resetBox()">Reset</button>
-        </div>
+                    <div id="box" style="transition: all 0.3s; min-height: 120px; padding: 25px; border: 1px solid #ddd; border-radius: 8px; background: white; margin-bottom: 20px; text-align: left;">
+                        <p id="testo-dinamico">Elemento target per le manipolazioni.</p>
+                    </div>
 
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+                    <div class="controls" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px;">
+                        <button onclick="cambiaContenuto()">Cambia Testo</button>
+                        <button onclick="cambiaColore()">Cambia Colore</button>
+                        <button onclick="aggiungiElemento()">Aggiungi Elemento</button>
+                        <button onclick="resetBox()">Reset</button>
+                    </div>
 
-        <div class="source-code" style="text-align: left;">
-            <h4>Codice Utilizzato</h4>
-            
-            <h5 style="margin-bottom: 5px;">HTML</h5>
-            <pre style="background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 5px; font-size: 0.85rem; max-height: 200px; overflow-y: auto;">
+                    <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+
+                    <div class="source-code" style="text-align: left;">
+                        <h4>Codice Utilizzato</h4>
+                        
+                        <h5 style="margin-bottom: 5px;">HTML (Struttura)</h5>
+                        <pre style="background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 5px; font-size: 0.85rem; max-height: 200px; overflow-y: auto;">
 &lt;div id="box"&gt;
-    &lt;p id="testo-dinamico"&gt;In attesa di interazione...&lt;/p&gt;
+    &lt;p id="testo-dinamico"&gt;Elemento target per le manipolazioni.&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;div class="controls"&gt;
     &lt;button onclick="cambiaContenuto()"&gt;Cambia Testo&lt;/button&gt;
-    &lt;button onclick="cambiaColore()"&gt;Cambia Stile&lt;/button&gt;
-    &lt;button onclick="aggiungiElemento()"&gt;Aggiungi Nodo&lt;/button&gt;
+    &lt;button onclick="cambiaColore()"&gt;Cambia Colore&lt;/button&gt;
+    &lt;button onclick="aggiungiElemento()"&gt;Aggiungi Elemento&lt;/button&gt;
     &lt;button onclick="resetBox()"&gt;Reset&lt;/button&gt;
-&lt;/div&gt;</pre>
+&lt;/div&gt;
 
-            <h5 style="margin-bottom: 5px; margin-top: 20px;">JavaScript</h5>
-            <pre style="background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 5px; font-size: 0.85rem; max-height: 300px; overflow-y: auto;">
+&lt;!-- Collegamento al file esterno richiesto --&gt;
+&lt;script src="script.js"&gt;&lt;/script&gt;</pre>
+
+                        <h5 style="margin-bottom: 5px; margin-top: 20px;">JavaScript (Logica nel file script.js)</h5>
+                        <pre style="background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 5px; font-size: 0.85rem; max-height: 300px; overflow-y: auto;">
 function cambiaContenuto() {
     const testo = document.getElementById("testo-dinamico");
-    testo.innerHTML = "Contenuto aggiornato via JS!";
+    testo.innerHTML = "<strong>Testo modificato!</strong>";
 }
 
 function cambiaColore() {
     const box = document.getElementById("box");
-    box.style.backgroundColor = "#e3f2fd";
-    box.style.border = "2px solid #1a1a1a";
+    const randomColor = Math.floor(Math.random()*16777215).toString(16);
+    box.style.backgroundColor = "#" + randomColor;
+    box.style.border = "3px solid #1a1a1a";
 }
 
 function aggiungiElemento() {
     const box = document.getElementById("box");
-    const nuovo = document.createElement("p");
-    nuovo.innerText = "Nuovo elemento aggiunto!";
-    box.appendChild(nuovo);
+    const nuovoParagrafo = document.createElement("p");
+    nuovoParagrafo.innerText = "Nuovo elemento aggiunto!";
+    box.appendChild(nuovoParagrafo);
 }
 
 function resetBox() {
     location.reload();
 }</pre>
-        </div>
-    </div>
-</section>
-            <section id="theory">
-                <div class="description">
-                    <h3>Theory: Algoritmo di Welford</h3>
-                    <p>
-                        L’algoritmo di Welford permette di aggiornare la media e la varianza in modo incrementale senza salvare tutti i dati.
-                    </p>
-                    <p style="font-family: monospace; background: #eee; padding: 10px; border-radius: 5px;">
-                        μₙ₊₁ = μₙ + (xₙ₊₁ − μₙ)/(n+1)
-                    </p>
+                    </div>
                 </div>
             </section>
-        </div>
-    </div>
 
-    <script src="script.js"></script>
-</body>
-</html>
+            <section id="theory" style="margin-top: 50px;">
+    <div class="description" style="text-align: left;">
+        <h3>2. Theory: Algoritmi Online e Metodo di Welford / Knuth</h3>
+        <p>Gli algoritmi online permettono di aggiornare una statistica quando arriva una nuova osservazione senza dover rielaborare tutti i dati precedenti.</p>
+
+        <h4>Obiettivo della dimostrazione</h4>
+        <p>Mostrare come aggiornare la devianza $SS_n$ (somma degli scarti quadratici) partendo dal valore precedente $SS_{n-1}$ quando si aggiunge $x_n$:</p>
+        <p style="text-align: center;">$$SS_n = SS_{n-1} + (x_n - \bar{x}_{n-1})(x_n - \bar{x}_n)$$</p>
+
+        <h4>Proprietà utilizzate</h4>
+        <ul>
+            <li><strong>Definizione di devianza:</strong> $SS_n = \sum_{i=1}^{n} (x_i - \bar{x}_n)^2$</li>
+            <li><strong>Somma degli scarti nulla:</strong> $\sum_{i=1}^{n} (x_i - \bar{x}_n) = 0$</li>
+            <li><strong>Aggiornamento della media:</strong> $\bar{x}_n = \bar{x}_{n-1} + \frac{x_n - \bar{x}_{n-1}}{n}$</li>
+        </ul>
+
+        <h4>Dimostrazione e Manipolazioni</h4>
+        <p>Partiamo dalla scomposizione della devianza al passo $n$. Applichiamo un <strong>artificio algebrico</strong> aggiungendo e sottraendo $\bar{x}_{n-1}$ all'interno del quadrato:</p>
+        <p style="text-align: center;">$$SS_n = \sum_{i=1}^{n} [(x_i - \bar{x}_{n-1}) + (\bar{x}_{n-1} - \bar{x}_n)]^2$$</p>
+        <p>Sviluppando il quadrato del binomio, il termine del <strong>doppio prodotto</strong> si annulla grazie alla proprietà della somma degli scarti nulla rispetto alla media. Rimangono solo i termini che definiscono la devianza precedente e l'incremento dovuto al nuovo dato.</p>
+        
+        <p>Utilizzando la relazione di aggiornamento della media e raccogliendo a fattor comune, si ottiene la formula ricorsiva finale di <strong>Welford</strong>, che garantisce stabilità numerica ed efficienza computazionale.</p>
+
+        <p><strong>Calcolo finale della Varianza:</strong><br>
+        Una volta ottenuta $SS_n$, la varianza campionaria è semplicemente: $$s^2 = \frac{SS_n}{n-1}$$</p>
+    </div>
+</section>

@@ -1,0 +1,15 @@
+body {
+    font-family: Arial;
+    margin: 40px;
+    line-height: 1.6;
+}
+
+h1 {
+    color: #333;
+}
+
+#box {
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid black;
+}

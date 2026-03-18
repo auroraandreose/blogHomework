@@ -26,30 +26,60 @@
             
          <section id="application">
     <div class="description">
-        <h3>1. Application: Varie Manipolazioni del DOM</h3>
+        <h3>1. Application</h3>
         
-        <p>
-            Il <strong>DOM (Document Object Model)</strong> è l'interfaccia di programmazione che permette a JavaScript di accedere e manipolare dinamicamente il contenuto, la struttura e lo stile dei documenti HTML. 
-        </p>
-
-        <div id="box" style="transition: all 0.4s ease; min-height: 150px; padding: 25px; border: 1px solid #ddd; border-radius: 8px; background: white;">
-            <p id="testo-dinamico">Elemento target per le manipolazioni.</p>
+        <div id="box" style="transition: all 0.3s; min-height: 100px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background: white; margin-bottom: 20px;">
+            <p id="testo-dinamico">In attesa di interazione...</p>
         </div>
 
-        <div class="controls" style="margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-            <button onclick="cambiaContenuto()">Modifica Testo</button>
-            <button onclick="cambiaColore()">Cambia Colore</button>
-            <button onclick="aggiungiElemento()">Aggiungi Elemento</button>
+        <div class="controls" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 40px;">
+            <button onclick="cambiaContenuto()">Cambia Testo</button>
+            <button onclick="cambiaColore()">Cambia Stile</button>
+            <button onclick="aggiungiElemento()">Aggiungi Nodo</button>
             <button onclick="resetBox()">Reset</button>
         </div>
 
-        <div style="margin-top: 30px; text-align: left; background: #282c34; color: #abb2bf; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.9rem;">
-            <p style="color: #d19a66; margin-top: 0;">// Esempio di manipolazione della struttura in JS:</p>
-            <code>
-                const nuovo = document.createElement("p"); <br>
-                nuovo.innerText = "Nuovo elemento"; <br>
-                box.appendChild(nuovo);
-            </code>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+
+        <div class="source-code" style="text-align: left;">
+            <h4>Codice Utilizzato</h4>
+            
+            <h5 style="margin-bottom: 5px;">HTML</h5>
+            <pre style="background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 5px; font-size: 0.85rem; max-height: 200px; overflow-y: auto;">
+&lt;div id="box"&gt;
+    &lt;p id="testo-dinamico"&gt;In attesa di interazione...&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="controls"&gt;
+    &lt;button onclick="cambiaContenuto()"&gt;Cambia Testo&lt;/button&gt;
+    &lt;button onclick="cambiaColore()"&gt;Cambia Stile&lt;/button&gt;
+    &lt;button onclick="aggiungiElemento()"&gt;Aggiungi Nodo&lt;/button&gt;
+    &lt;button onclick="resetBox()"&gt;Reset&lt;/button&gt;
+&lt;/div&gt;</pre>
+
+            <h5 style="margin-bottom: 5px; margin-top: 20px;">JavaScript</h5>
+            <pre style="background: #f9f9f9; border: 1px solid #eee; padding: 15px; border-radius: 5px; font-size: 0.85rem; max-height: 300px; overflow-y: auto;">
+function cambiaContenuto() {
+    const testo = document.getElementById("testo-dinamico");
+    testo.innerHTML = "Contenuto aggiornato via JS!";
+}
+
+function cambiaColore() {
+    const box = document.getElementById("box");
+    box.style.backgroundColor = "#e3f2fd";
+    box.style.border = "2px solid #1a1a1a";
+}
+
+function aggiungiElemento() {
+    const box = document.getElementById("box");
+    const nuovo = document.createElement("p");
+    nuovo.innerText = "Nuovo elemento aggiunto!";
+    box.appendChild(nuovo);
+}
+
+function resetBox() {
+    location.reload();
+}</pre>
         </div>
     </div>
 </section>

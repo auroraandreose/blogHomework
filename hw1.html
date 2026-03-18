@@ -9,12 +9,14 @@
 
     <div class="sidebar">
         <h2>Menu</h2>
-        <div class="menu-sezione">
-            <p class="menu-titolo">NAVIGAZIONE</p>
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="hw1.html">Homework 1</a></li>
-            </ul>
+        
+        <a href="index.html" class="home-link">Home</a>
+
+        <div class="dropdown">
+            <button class="dropbtn">Homework ▼</button>
+            <div class="dropdown-content">
+                <a href="hw1.html">Homework 1</a>
+                </div>
         </div>
     </div>
 
@@ -23,19 +25,23 @@
             <h1>Homework 1</h1>
             
             <section id="application">
-                <h3>Application</h3>
-                <div id="box">Testo iniziale</div>
-                <button onclick="cambiaTesto()">Cambia testo</button>
+                <div id="box">
+                    <h3>Application</h3>
+                    <p id="testo-dinamico">Testo iniziale</p>
+                    <button onclick="cambiaTesto()">Cambia testo</button>
+                </div>
             </section>
 
-            <section id="theory" style="margin-top: 50px; text-align: left;">
-                <h3>Theory: Algoritmo di Welford</h3>
-                <p>
-                    L’algoritmo di Welford permette di aggiornare la media e la varianza in modo incrementale.
-                </p>
-                <code style="display: block; background: #eee; padding: 15px; border-radius: 5px;">
-                    μₙ₊₁ = μₙ + (xₙ₊₁ − μₙ)/(n+1)
-                </code>
+            <section id="theory">
+                <div class="description">
+                    <h3>Theory: Algoritmo di Welford</h3>
+                    <p>
+                        L’algoritmo di Welford permette di aggiornare la media e la varianza in modo incrementale senza salvare tutti i dati.
+                    </p>
+                    <p style="font-family: monospace; background: #eee; padding: 10px; border-radius: 5px;">
+                        μₙ₊₁ = μₙ + (xₙ₊₁ − μₙ)/(n+1)
+                    </p>
+                </div>
             </section>
         </div>
     </div>

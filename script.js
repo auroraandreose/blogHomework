@@ -20,7 +20,7 @@ function aggiungiElemento() {
     const box = document.getElementById("box");
     const nuovoParagrafo = document.createElement("p");
     nuovoParagrafo.innerText = "✨ Nuovo elemento creato alle " + new Date().toLocaleTimeString();
-    nuovoParagrafo.style.color = "#4CAF50";
+    nuovoParagrafo.style.color = "#000000";
     box.appendChild(nuovoParagrafo);
 }
 

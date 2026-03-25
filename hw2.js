@@ -57,7 +57,7 @@ function casoPatologico() {
   const dati = [];
 
   for (let i = 0; i < 100000; i++) {
-    dati.push(base + (i % 5));
+    dati.push(base + i);
   }
 
   const media = mediaNaive(dati);
@@ -67,6 +67,4 @@ function casoPatologico() {
   document.getElementById("mediaPat").textContent = media.toFixed(6);
   document.getElementById("varNaivePat").textContent = varN.toFixed(6);
   document.getElementById("varWelfordPat").textContent = varW.toFixed(6);
-  document.getElementById("listaPatologica").textContent =
-    dati.slice(0, 50).join(", ") + " ...";
-}
+  document.getElementById("listaPatologica").textContent = dati.join(", ");

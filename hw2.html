@@ -68,6 +68,96 @@
   <summary>Mostra i valori del caso patologico</summary>
   <div id="listaPatologica" class="data-box">Nessun numero generato.</div>
 </details>
+            <hr>
+
+      <h2>Parte B - Generazione di distribuzioni da U[0,1)</h2>
+
+      <p class="intro-text">
+        Dato un generatore uniforme in [0,1), molte variabili casuali possono
+        essere ottenute applicando opportune trasformazioni matematiche.
+        L'idea di fondo è che il generatore uniforme costituisce il punto di partenza
+        per costruire distribuzioni continue e discrete di interesse statistico.
+      </p>
+
+      <div class="theory-box">
+        <h3>Principali metodi di generazione</h3>
+        <ul class="theory-list">
+          <li>
+            <strong>Metodo della trasformata inversa:</strong>
+            se la funzione di ripartizione F è invertibile, si genera
+            X = F<sup>-1</sup>(U).
+          </li>
+          <li>
+            <strong>Metodo di composizione:</strong>
+            una variabile complessa può essere costruita combinando variabili
+            più semplici già generate.
+          </li>
+          <li>
+            <strong>Metodo di accettazione-rifiuto:</strong>
+            si genera da una distribuzione ausiliaria e si accetta il valore
+            con una certa probabilità, in modo da ottenere la distribuzione desiderata.
+          </li>
+          <li>
+            <strong>Trasformazioni tra distribuzioni note:</strong>
+            alcune distribuzioni si ottengono direttamente da altre,
+            ad esempio come somme, rapporti o trasformazioni di variabili Normali,
+            Gamma o Chi-quadro.
+          </li>
+        </ul>
+      </div>
+
+      <div class="theory-box">
+        <h3>Algoritmi e formule per le principali distribuzioni</h3>
+        <ul class="formula-list">
+          <li><strong>Uniforme U[0,1):</strong> X = U</li>
+          <li><strong>Discreta arbitraria:</strong> si costruiscono le probabilità cumulative Cj = p1 + ... + pj e si pone X = xj se Cj-1 ≤ U < Cj</li>
+          <li><strong>Bernoulli(p):</strong> X = 1 se U < p, altrimenti X = 0</li>
+          <li><strong>Binomiale B(n,p):</strong> X = X1 + ... + Xn, con Xi Bernoulli(p) indipendenti</li>
+          <li><strong>Poisson(λ):</strong> algoritmo di Knuth: si moltiplicano uniformi finché il prodotto scende sotto exp(-λ)</li>
+          <li><strong>Esponenziale(λ):</strong> X = -ln(1-U) / λ</li>
+          <li><strong>Weibull(k,λ):</strong> X = λ[-ln(1-U)]^(1/k)</li>
+          <li><strong>Pareto(α, xm):</strong> X = xm(1-U)^(-1/α)</li>
+          <li><strong>Cauchy(x0,γ):</strong> X = x0 + γ tan[π(U - 1/2)]</li>
+          <li><strong>Triangolare(a,b,c):</strong> distribuzione generata con trasformata inversa definita a tratti</li>
+          <li><strong>Normale standard N(0,1):</strong> metodo di Box-Muller:
+            Z1 = sqrt(-2 ln U1) cos(2πU2),
+            Z2 = sqrt(-2 ln U1) sin(2πU2)
+          </li>
+          <li><strong>Normale N(μ,σ²):</strong> X = μ + σZ, con Z normale standard</li>
+          <li><strong>Gamma(α,β):</strong> in generale si usa un algoritmo di accettazione-rifiuto o metodi specifici come Marsaglia-Tsang</li>
+          <li><strong>Beta(α,β):</strong> se G1 ~ Gamma(α,1) e G2 ~ Gamma(β,1), allora X = G1 / (G1 + G2)</li>
+          <li><strong>Chi-quadro(ν):</strong> X = Z1² + ... + Zν², con Zi Normali standard indipendenti</li>
+          <li><strong>Student(tν):</strong> T = Z / sqrt(V/ν), con Z ~ N(0,1) e V ~ Chi-quadro(ν)</li>
+          <li><strong>Fisher F(ν1,ν2):</strong> F = (V1/ν1) / (V2/ν2), con V1 e V2 Chi-quadro indipendenti</li>
+        </ul>
+      </div>
+            <h2>Demo JavaScript (opzionale)</h2>
+
+      <p class="intro-text">
+        In questa sezione genero campioni casuali a partire da U[0,1) e
+        verifico qualitativamente la forma delle distribuzioni ottenute
+        tramite un istogramma testuale.
+      </p>
+
+      <div class="button-row">
+        <button onclick="demoUniforme()">Uniforme</button>
+        <button onclick="demoEsponenziale()">Esponenziale</button>
+        <button onclick="demoNormale()">Normale</button>
+      </div>
+
+      <div class="results-box">
+        <p><strong>Distribuzione:</strong> <span id="distNome">-</span></p>
+        <p><strong>Campione:</strong> <span id="distCampione">-</span></p>
+        <p><strong>Media:</strong> <span id="distMedia">-</span></p>
+        <p><strong>Varianza:</strong> <span id="distVarianza">-</span></p>
+      </div>
+
+      <details class="details-box">
+        <summary>Mostra istogramma</summary>
+        <div id="distOutput" class="data-box">
+          Nessuna distribuzione generata.
+        </div>
+      </details>
     </div>
   </div>
 

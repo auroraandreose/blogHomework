@@ -1,7 +1,7 @@
 .container {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 30px 20px 60px 20px;
+  padding: 40px 30px 60px 30px;
 }
 
 .main-title {
@@ -14,7 +14,7 @@
 .card {
   background: #f3f3f3;
   border-radius: 14px;
-  padding: 32px;
+  padding: 36px;
 }
 
 .intro-text {
@@ -50,10 +50,11 @@
   border: 1px solid #e2e2e2;
   border-radius: 8px;
   line-height: 1.6;
-  word-break: break-word;
   font-family: monospace;
-}
 
+  max-height: 150px;   /* altezza fissa */
+  overflow-y: auto;    /* scroll verticale */
+}
 hr {
   border: none;
   border-top: 1px solid #d0d0d0;

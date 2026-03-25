@@ -7,6 +7,20 @@
   <link rel="stylesheet" href="hw2.css">
 </head>
 <body>
+  <div class="sidebar">
+    <h2>Menù</h2>
+
+    <a href="index.html" class="home-link">Home</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Homework ▼</button>
+      <div class="dropdown-content">
+        <a href="hw1.html">Homework 1</a>
+        <a href="hw2.html">Homework 2</a>
+      </div>
+    </div>
+  </div>
+
   <div class="container">
     <h1 class="main-title">Homework 2</h1>
 
@@ -30,7 +44,7 @@
 
       <details class="details-box">
         <summary>Mostra i numeri casuali generati</summary>
-        <div id="listaRandom" class="data-box"></div>
+        <div id="listaRandom" class="data-box">Nessun numero generato.</div>
       </details>
 
       <hr>
@@ -53,7 +67,7 @@
 
       <details class="details-box">
         <summary>Mostra i valori del caso patologico</summary>
-        <div id="listaPatologica" class="data-box"></div>
+        <div id="listaRandom" class="data-box">Nessun numero generato.</div>
       </details>
     </div>
   </div>

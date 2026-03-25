@@ -10,11 +10,11 @@ function generaNumeri() {
   const varN = varianzaNaive(dati);
   const varW = varianzaWelford(dati);
 
-  document.getElementById("media").innerText = media.toFixed(6);
-  document.getElementById("varNaive").innerText = varN.toFixed(6);
-  document.getElementById("varWelford").innerText = varW.toFixed(6);
+  document.getElementById("media").textContent = media.toFixed(6);
+  document.getElementById("varNaive").textContent = varN.toFixed(6);
+  document.getElementById("varWelford").textContent = varW.toFixed(6);
   document.getElementById("listaRandom").textContent =
-  dati.map(x => x.toFixed(6)).join(", ");
+    dati.map(x => x.toFixed(6)).join(", ");
 }
 
 function mediaNaive(dati) {
@@ -53,12 +53,14 @@ function varianzaWelford(dati) {
 }
 
 function casoPatologico() {
+  const base = 1000000000 + Math.floor(Math.random() * 1000000);
+
   const dati = [
-    1000000001,
-    1000000002,
-    1000000003,
-    1000000004,
-    1000000005
+    base + 1,
+    base + 2,
+    base + 3,
+    base + 4,
+    base + 5
   ];
 
   const varN = varianzaNaive(dati);
@@ -66,7 +68,5 @@ function casoPatologico() {
 
   document.getElementById("varNaivePat").textContent = varN;
   document.getElementById("varWelfordPat").textContent = varW;
-
-  document.getElementById("listaPatologica").textContent =
-    dati.join(", ");
+  document.getElementById("listaPatologica").textContent = dati.join(", ");
 }

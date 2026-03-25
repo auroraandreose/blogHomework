@@ -63,9 +63,11 @@ function casoPatologico() {
     base + 5
   ];
 
+  const media = mediaNaive(dati);
   const varN = varianzaNaive(dati);
   const varW = varianzaWelford(dati);
 
+  document.getElementById("mediaPat").textContent = media.toFixed(6);
   document.getElementById("varNaivePat").textContent = varN;
   document.getElementById("varWelfordPat").textContent = varW;
   document.getElementById("listaPatologica").textContent = dati.join(", ");

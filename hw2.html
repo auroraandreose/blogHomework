@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -8,17 +7,15 @@
   <link rel="stylesheet" href="hw2.css">
 </head>
 <body>
-
   <div class="container">
     <h1 class="main-title">Homework 2</h1>
 
     <div class="card">
-      <h2>Parte A: Media e varianza con la ricorrenza di Welford</h2>
+      <h2>Parte A - Welford vs Naive</h2>
 
       <p class="intro-text">
-        In questa sezione genero numeri pseudocasuali uniformi in <code>[0,1)</code> e calcolo
+        In questa sezione genero numeri pseudocasuali uniformi in [0,1) e calcolo
         media e varianza con due approcci: la formula naive e la ricorrenza di Welford.
-        L'obiettivo è mostrare che Welford è numericamente più stabile.
       </p>
 
       <div class="button-row">
@@ -39,11 +36,10 @@
 
       <hr>
 
-      <h2>Test del caso patologico</h2>
+      <h2>Test caso patologico</h2>
 
       <p class="intro-text">
-        Qui considero una sequenza di valori molto grandi ma tra loro vicini. In questi casi la formula
-        naive può soffrire di cancellazione numerica, mentre la ricorrenza di Welford resta stabile.
+        Qui considero una sequenza di valori molto grandi ma tra loro vicini.
       </p>
 
       <div class="button-row">

@@ -60,7 +60,7 @@ hr {
   border-top: 1px solid #d0d0d0;
   margin: 35px 0;
 }
-button {
+.button-row button {
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -70,6 +70,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.button-row button:hover {
   background-color: #449d48;
 }

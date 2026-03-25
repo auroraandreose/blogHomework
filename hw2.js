@@ -54,21 +54,19 @@ function varianzaWelford(dati) {
 
 function casoPatologico() {
   const base = 1000000000 + Math.floor(Math.random() * 1000000);
+  const dati = [];
 
-  const dati = [
-    base + 1,
-    base + 2,
-    base + 3,
-    base + 4,
-    base + 5
-  ];
+  for (let i = 0; i < 100000; i++) {
+    dati.push(base + (i % 5));
+  }
 
   const media = mediaNaive(dati);
   const varN = varianzaNaive(dati);
   const varW = varianzaWelford(dati);
 
   document.getElementById("mediaPat").textContent = media.toFixed(6);
-  document.getElementById("varNaivePat").textContent = varN;
-  document.getElementById("varWelfordPat").textContent = varW;
-  document.getElementById("listaPatologica").textContent = dati.join(", ");
+  document.getElementById("varNaivePat").textContent = varN.toFixed(6);
+  document.getElementById("varWelfordPat").textContent = varW.toFixed(6);
+  document.getElementById("listaPatologica").textContent =
+    dati.slice(0, 50).join(", ") + " ...";
 }

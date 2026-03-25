@@ -1,3 +1,4 @@
+let histogramChart = null;
 function generaNumeri() {
   const n = 100000;
   const dati = [];
@@ -111,11 +112,18 @@ function generaNormale(n = 5000) {
   return dati;
 }
 
-function istogrammaTestuale(dati, bins = 20) {
+function calcolaIstogramma(dati, bins = 20) {
   const min = Math.min(...dati);
   const max = Math.max(...dati);
   const ampiezza = (max - min) / bins;
   const frequenze = new Array(bins).fill(0);
+  const etichette = [];
+
+  for (let i = 0; i < bins; i++) {
+    const sinistra = min + i * ampiezza;
+    const destra = min + (i + 1) * ampiezza;
+    etichette.push(`${sinistra.toFixed(2)} - ${destra.toFixed(2)}`);
+  }
 
   for (let x of dati) {
     let indice = Math.floor((x - min) / ampiezza);
@@ -123,43 +131,103 @@ function istogrammaTestuale(dati, bins = 20) {
     frequenze[indice]++;
   }
 
-  const freqMax = Math.max(...frequenze);
-  let output = "";
-
-  for (let i = 0; i < bins; i++) {
-    const sinistra = (min + i * ampiezza).toFixed(2);
-    const destra = (min + (i + 1) * ampiezza).toFixed(2);
-    const lunghezza = Math.round((frequenze[i] / freqMax) * 40);
-    const barra = "█".repeat(lunghezza);
-    output += `[${sinistra}, ${destra}) ${barra} (${frequenze[i]})\n`;
-  }
-
-  return output;
+  return { etichette, frequenze };
 }
 
-function mostraDistribuzione(nome, dati) {
+function disegnaIstogramma(dati, nome, coloreSfondo, coloreBordo) {
+  const { etichette, frequenze } = calcolaIstogramma(dati, 20);
+  const ctx = document.getElementById("histChart").getContext("2d");
+
+  if (histogramChart) {
+    histogramChart.destroy();
+  }
+
+  histogramChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: etichette,
+      datasets: [{
+        label: `Istogramma - ${nome}`,
+        data: frequenze,
+        backgroundColor: coloreSfondo,
+        borderColor: coloreBordo,
+        borderWidth: 1,
+        barPercentage: 1.0,
+        categoryPercentage: 1.0
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true
+        },
+        title: {
+          display: true,
+          text: `Distribuzione empirica: ${nome}`
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            maxRotation: 90,
+            minRotation: 45
+          },
+          title: {
+            display: true,
+            text: "Classi"
+          }
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: "Frequenza"
+          }
+        }
+      }
+    }
+  });
+}
+
+function mostraDistribuzione(nome, dati, coloreSfondo, coloreBordo) {
   const media = mediaNaive(dati);
   const varianza = varianzaWelford(dati);
-  const istogramma = istogrammaTestuale(dati);
 
   document.getElementById("distNome").textContent = nome;
   document.getElementById("distCampione").textContent = dati.length;
   document.getElementById("distMedia").textContent = media.toFixed(6);
   document.getElementById("distVarianza").textContent = varianza.toFixed(6);
-  document.getElementById("distOutput").textContent = istogramma;
+
+  disegnaIstogramma(dati, nome, coloreSfondo, coloreBordo);
 }
 
 function demoUniforme() {
   const dati = generaUniformeDistribuzione();
-  mostraDistribuzione("Uniforme U[0,1)", dati);
+  mostraDistribuzione(
+    "Uniforme U[0,1)",
+    dati,
+    "rgba(76, 175, 80, 0.6)",
+    "rgba(76, 175, 80, 1)"
+  );
 }
 
 function demoEsponenziale() {
   const dati = generaEsponenziale();
-  mostraDistribuzione("Esponenziale", dati);
+  mostraDistribuzione(
+    "Esponenziale",
+    dati,
+    "rgba(255, 152, 0, 0.6)",
+    "rgba(255, 152, 0, 1)"
+  );
 }
 
 function demoNormale() {
   const dati = generaNormale();
-  mostraDistribuzione("Normale standard", dati);
+  mostraDistribuzione(
+    "Normale standard",
+    dati,
+    "rgba(33, 150, 243, 0.6)",
+    "rgba(33, 150, 243, 1)"
+  );
 }

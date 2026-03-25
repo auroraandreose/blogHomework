@@ -1,5 +1,5 @@
 function generaNumeri() {
-  const n = 30;
+  const n = 100000;
   const dati = [];
 
   for (let i = 0; i < n; i++) {

@@ -1,6 +1,21 @@
 .main-content {
   margin-left: 260px;
-  padding: 40px 50px;
+  padding: 40px 60px;
+}
+
+.main-title {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.card {
+  max-width: 1000px;
+  margin: 0 auto 35px auto;
+}
+
+.intro-text {
+  max-width: 900px;
+  margin-bottom: 25px;
 }
 
 .controls-row {
@@ -35,7 +50,7 @@
 
 #graficoRandomWalk {
   width: 100%;
-  max-width: 100%;
+  height: auto;
   display: block;
   margin: 0 auto;
   background: white;
@@ -53,6 +68,10 @@
 .results-box p {
   margin: 8px 0;
   font-size: 16px;
+}
+
+.card h2 {
+  margin-bottom: 18px;
 }
 
 .card h3 {

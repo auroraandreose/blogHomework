@@ -1,34 +1,42 @@
-<!DOCTYPE html>
+
+  <!DOCTYPE html>
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Homework 3 - Random Walk</title>
-  <link rel="stylesheet" href="homework3.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homework 3</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="hw3.css">
 </head>
-<body> 
-    <div class="sidebar">
-        <h2>Menù</h2>
-        <a href="index.html" class="home-link">Home</a>
-        <div class="dropdown">
-            <button class="dropbtn">Homework ▼</button>
-            <div class="dropdown-content">
-                <a href="hw1.html">Homework 1</a>
-                <a href="hw2.html">Homework 2</a>
-                <a href="hw3.html">Homework 3</a>
-            </div>
-        </div>
-    </div>
-  <div class="container">
-    <h1>Homework 3</h1>
+<body>
 
-    <section class="card">
-      <h2>Application - Random Walk</h2>
-      <p>
-        In questa applicazione simulo una random walk, cioè una sequenza costruita
-        sommando salti casuali di +1 e -1 a partire da un valore iniziale.
+  <div class="sidebar">
+    <h2>Menù</h2>
+
+    <a href="index.html" class="home-link">Home</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Homework ▼</button>
+      <div class="dropdown-content">
+        <a href="hw1.html">Homework 1</a>
+        <a href="hw2.html">Homework 2</a>
+        <a href="hw3.html">Homework 3</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <h1 class="main-title">Homework 3</h1>
+
+    <div class="card">
+      <h2>Application: Random Walk</h2>
+
+      <p class="intro-text">
+        In questa sezione simulo una random walk, cioè una sequenza costruita sommando
+        salti casuali di +1 e -1 a partire da un valore iniziale.
       </p>
 
-      <div class="controls">
+      <div class="button-row controls-row">
         <label for="steps">Numero di passi:</label>
         <input type="number" id="steps" value="200" min="10" max="2000">
 
@@ -38,100 +46,53 @@
         <button onclick="generaRandomWalk()">Genera Random Walk</button>
       </div>
 
-      <canvas id="graficoRandomWalk" width="900" height="400"></canvas>
+      <div class="chart-box">
+        <canvas id="graficoRandomWalk" width="900" height="400"></canvas>
+      </div>
 
       <div class="results-box">
         <p><strong>Valore iniziale:</strong> <span id="valoreIniziale">-</span></p>
         <p><strong>Valore finale:</strong> <span id="valoreFinale">-</span></p>
         <p><strong>Numero di passi:</strong> <span id="numeroPassi">-</span></p>
+        <p><strong>Salti +1:</strong> <span id="numPlus">-</span></p>
+        <p><strong>Salti -1:</strong> <span id="numMinus">-</span></p>
       </div>
-    </section>
+    </div>
 
-    <section class="card">
-      <h2>Theory - Introduzione agli exchange e agli strumenti finanziari</h2>
+    <div class="card">
+      <h2>Theory: Intro agli exchange e agli strumenti</h2>
 
-      <h3>I principali mercati finanziari del mondo: ruolo e funzionamento</h3>
+      <h3>I principali mercati finanziari del mondo</h3>
       <p>
-        I mercati finanziari sono luoghi, fisici o elettronici, in cui vengono scambiati
+        I mercati finanziari sono sedi, fisiche o elettroniche, in cui vengono scambiati
         strumenti finanziari tra investitori, imprese e istituzioni. Il loro ruolo principale
-        è favorire l’incontro tra domanda e offerta di capitale, permettendo alle imprese di
-        finanziarsi e agli investitori di allocare le proprie risorse.
+        è favorire l’incontro tra domanda e offerta di capitale e contribuire alla formazione dei prezzi.
       </p>
 
       <p>
-        Tra i principali mercati finanziari del mondo si possono ricordare il New York Stock Exchange (NYSE),
-        il Nasdaq, la London Stock Exchange (LSE), Euronext, la Tokyo Stock Exchange (TSE)
-        e la Shanghai Stock Exchange. Alcuni mercati sono più orientati ai titoli azionari tradizionali,
-        mentre altri ospitano soprattutto società tecnologiche o grandi volumi di derivati.
-      </p>
-
-      <p>
-        Il funzionamento di un exchange si basa sulla presenza di regole standardizzate,
-        sistemi elettronici di negoziazione e controlli regolamentari. Gli operatori inseriscono
-        ordini di acquisto e vendita, che vengono eseguiti quando i prezzi risultano compatibili.
-        In questo modo il mercato contribuisce alla formazione dei prezzi e alla liquidità degli strumenti.
+        Tra i principali mercati finanziari del mondo si trovano il New York Stock Exchange (NYSE),
+        il Nasdaq, la London Stock Exchange (LSE), Euronext, la Tokyo Stock Exchange e la Shanghai Stock Exchange.
+        Alcuni sono maggiormente orientati ai titoli azionari tradizionali, altri ospitano soprattutto società
+        tecnologiche o grandi volumi di strumenti derivati.
       </p>
 
       <h3>Il ruolo e la funzione dei broker finanziari</h3>
       <p>
-        I broker finanziari sono intermediari autorizzati che consentono agli investitori di accedere
-        ai mercati. Il loro compito principale è trasmettere ed eseguire gli ordini di acquisto e vendita
-        per conto dei clienti.
-      </p>
-
-      <p>
-        Oltre all’esecuzione degli ordini, i broker possono offrire piattaforme operative,
-        strumenti di analisi, dati di mercato, servizi di consulenza e gestione del rischio.
-        In pratica svolgono una funzione di collegamento tra il singolo investitore e l’exchange.
-      </p>
-
-      <p>
-        I broker possono differenziarsi per costi, velocità di esecuzione, mercati accessibili
-        e servizi aggiuntivi. Alcuni sono rivolti principalmente a investitori retail,
-        altri invece operano soprattutto con investitori istituzionali.
+        I broker sono intermediari autorizzati che permettono agli investitori di accedere ai mercati.
+        Il loro compito è eseguire ordini di acquisto e vendita per conto dei clienti, offrendo spesso anche
+        piattaforme operative, dati di mercato e strumenti di analisi.
       </p>
 
       <h3>I principali strumenti finanziari utilizzati negli exchange</h3>
       <p>
-        Tra gli strumenti finanziari più comuni scambiati negli exchange vi sono le azioni,
-        le obbligazioni, gli ETF e i derivati.
+        Tra gli strumenti più diffusi vi sono azioni, obbligazioni, ETF e derivati.
+        Le azioni rappresentano quote di proprietà di una società; le obbligazioni sono titoli di debito;
+        gli ETF permettono di investire in un paniere di attività; i derivati, come futures e opzioni,
+        derivano invece il loro valore da un’attività sottostante e sono usati per copertura o speculazione.
       </p>
-
-      <p>
-        Le <strong>azioni</strong> rappresentano quote di proprietà di una società.
-        Chi acquista un’azione diventa, in piccola parte, proprietario dell’impresa e può
-        beneficiare di eventuali dividendi e dell’aumento del prezzo del titolo.
-      </p>
-
-      <p>
-        Le <strong>obbligazioni</strong> sono titoli di debito: l’investitore presta capitale
-        a un emittente, che può essere uno Stato o un’impresa, ricevendo in cambio interessi
-        e il rimborso del capitale alla scadenza.
-      </p>
-
-      <p>
-        Gli <strong>ETF</strong> sono fondi negoziati in borsa che replicano un indice,
-        un settore o un paniere di attività. Sono spesso usati per ottenere diversificazione
-        con un solo strumento.
-      </p>
-
-      <p>
-        I <strong>derivati</strong>, come futures e opzioni, sono strumenti il cui valore dipende
-        da un’attività sottostante. Possono essere utilizzati sia per copertura del rischio,
-        sia per speculazione, sia per strategie più complesse di investimento.
-      </p>
-
-      <p>
-        La differenza principale tra questi strumenti riguarda quindi la loro funzione:
-        le azioni servono per partecipare al capitale di rischio di un’impresa,
-        le obbligazioni per finanziare un emittente ricevendo interessi,
-        gli ETF per investire in modo diversificato,
-        mentre i derivati sono usati soprattutto per copertura o operazioni speculative.
-      </p>
-    </section>
+    </div>
   </div>
 
-  <script src="homework3.js"></script>
+  <script src="hw3.js"></script>
 </body>
 </html>
-  

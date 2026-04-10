@@ -119,19 +119,26 @@ function updateChart(times, rwValues) {
         }
       },
       scales: {
-        x: {
-          title: {
-            display: true,
-            text: "Tempo"
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: "Valore del processo"
-          }
-        }
+  x: {
+    ticks: {
+      maxTicksLimit: 10,
+      callback: function(value) {
+        const label = this.getLabelForValue(value);
+        return Number(label).toFixed(2);
       }
+    },
+    title: {
+      display: true,
+      text: "Tempo"
+    }
+  },
+  y: {
+    title: {
+      display: true,
+      text: "Valore del processo"
+    }
+  }
+}
     }
   });
 }

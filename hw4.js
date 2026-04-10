@@ -26,7 +26,7 @@ function simulateScaledRandomWalk(n, T) {
 
     const scaledRW = partialSum / Math.sqrt(n);
 
-    times.push((k * T) / n);
+    times.push(parseFloat(((k * T) / n).toFixed(2)));
     rwValues.push(scaledRW);
   }
 

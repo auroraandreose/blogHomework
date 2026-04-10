@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+  <script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+    svg: { fontCache: 'global' }
+  };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Homework 4</title>
@@ -117,65 +124,69 @@ function simulateScaledRandomWalk(n, T) {
     </div>
   </section>
 
-  <section class="card theory-card">
-    <h2>Theory: Principio di Invarianza di Donsker</h2>
+ <section class="card theory-card">
+  <h2>Theory: Principio di Invarianza di Donsker</h2>
 
+  <div class="theory-text">
     <p>
       Il <strong>Principio di Invarianza di Donsker</strong>, noto anche come
-      <strong>teorema del limite funzionale</strong>, afferma che una Random Walk
-      discreta con incrementi indipendenti, media nulla e varianza finita,
-      se opportunamente riscalata, converge al <strong>Moto Browniano Aritmetico</strong>
-      quando il numero di passi tende all’infinito.
+      <strong>teorema del limite funzionale</strong>, afferma che una Random Walk discreta
+      con incrementi indipendenti, media nulla e varianza finita, se opportunamente
+      riscalata, converge al <strong>Moto Browniano Aritmetico</strong> quando il numero
+      di passi tende all’infinito.
     </p>
 
     <p>
       Nel nostro caso consideriamo una successione di variabili di
-      <strong>Rademacher</strong>, cioè variabili che assumono i valori +1 e −1
-      con uguale probabilità. Se indichiamo con ξ₁, ξ₂, ..., ξₖ i primi incrementi,
-      il processo riscalato può essere scritto come:
+      <strong>Rademacher</strong>, cioè variabili che assumono i valori
+      <strong>+1</strong> e <strong>−1</strong> con uguale probabilità.
+      Se indichiamo con \(\xi_1, \xi_2, \dots, \xi_k\) i primi incrementi,
+      il processo riscalato si può scrivere come:
     </p>
+  </div>
 
-    <div class="formula-box">
-      <p class="formula-main">
-        X<sub>n</sub>(t) = (1 / √n) · (ξ<sub>1</sub> + ξ<sub>2</sub> + ... + ξ<sub>k</sub>)
-      </p>
-      <p class="formula-note">
-        dove t = kT/n, con k = 0, 1, ..., n.
-      </p>
+  <div class="formula-box">
+    <div class="formula-main">
+      \( X_n(t) = \frac{1}{\sqrt{n}} \sum_{i=1}^{k} \xi_i \)
     </div>
+    <div class="formula-note">
+      con \( t = \frac{kT}{n} \), per \( k = 0,1,\dots,n \).
+    </div>
+  </div>
 
+  <div class="theory-text">
     <p>
-      Il fattore <strong>1 / √n</strong> è essenziale perché consente di
+      Il fattore \( \frac{1}{\sqrt{n}} \) è fondamentale perché consente di
       stabilizzare la varianza della somma parziale. Senza questa normalizzazione,
-      la dispersione del processo crescerebbe troppo rapidamente al crescere di n.
-      Con il riscalamento, invece, il processo discreto mantiene una variabilità
-      compatibile con quella del limite continuo.
+      la variabilità crescerebbe troppo rapidamente all’aumentare di \( n \);
+      con il riscalamento, invece, il processo mantiene una dispersione compatibile
+      con quella del limite continuo.
     </p>
 
     <p>
       L’idea centrale del teorema è che, aumentando il numero di suddivisioni
-      dell’intervallo temporale, la Random Walk scalata perde progressivamente il
+      dell’intervallo temporale, la Random Walk scalata perde progressivamente il suo
       carattere puramente discreto e assume un andamento globale sempre più simile
       a quello di una traiettoria browniana.
     </p>
 
     <p>
-      Questo risultato è particolarmente importante perché mostra una proprietà di
+      Il risultato è importante perché mostra una proprietà di
       <strong>invarianza</strong>: il limite non dipende dalla distribuzione specifica
-      dei singoli passi, purché siano soddisfatte tre condizioni fondamentali:
-      indipendenza, media zero e varianza finita.
+      dei passi, purché siano soddisfatte tre condizioni fondamentali:
+      <strong>indipendenza</strong>, <strong>media zero</strong> e
+      <strong>varianza finita</strong>.
     </p>
 
     <p>
-      In termini intuitivi, il principio di Donsker estende l’idea del teorema
-      centrale del limite dal caso delle singole somme al caso dell’intero
-      <strong>processo stocastico</strong>. Per questo motivo la Random Walk
-      opportunamente riscalata costituisce un modello discreto naturale per
-      approssimare il Moto Browniano Aritmetico.
+      In modo intuitivo, il principio di Donsker estende l’idea del teorema centrale
+      del limite dal caso delle singole somme al caso dell’intero
+      <strong>processo stocastico</strong>. Per questo motivo, la Random Walk
+      opportunamente riscalata costituisce un modello discreto naturale del
+      Moto Browniano Aritmetico.
     </p>
-  </section>
-</main>
   </div>
+</section>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="hw4.js"></script>

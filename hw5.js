@@ -1,9 +1,11 @@
 let processChart = null;
 
+// Genera passo Rademacher (+1 / -1)
 function generateRademacher() {
   return Math.random() < 0.5 ? -1 : 1;
 }
 
+// Costruisce traiettoria browniana discreta
 function simulateBrownianPath(n, T) {
   const times = [0];
   const brownian = [0];
@@ -33,24 +35,22 @@ function simulateBrownianPath(n, T) {
   };
 }
 
-function buildABMAndGBM(times, brownian, mu, sigma, s0) {
-  const abm = [];
+// Costruisce il GBM
+function buildGBM(times, brownian, mu, sigma, s0) {
   const gbm = [];
 
   for (let i = 0; i < times.length; i++) {
     const t = times[i];
     const w = brownian[i];
 
-    const abmValue = mu * t + sigma * w;
-    const gbmValue = s0 * Math.exp((mu - 0.5 * sigma * sigma) * t + sigma * w);
-
-    abm.push(abmValue);
-    gbm.push(gbmValue);
+    const value = s0 * Math.exp((mu - 0.5 * sigma * sigma) * t + sigma * w);
+    gbm.push(value);
   }
 
-  return { abm, gbm };
+  return gbm;
 }
 
+// Simulazione completa
 function simulateProcesses() {
   const n = parseInt(document.getElementById("nSteps").value);
   const T = parseFloat(document.getElementById("timeHorizon").value);
@@ -62,12 +62,13 @@ function simulateProcesses() {
     isNaN(n) || isNaN(T) || isNaN(mu) || isNaN(sigma) || isNaN(s0) ||
     n <= 0 || T <= 0 || sigma <= 0 || s0 <= 0
   ) {
-    alert("Inserisci valori validi per n, T, μ, σ e S0.");
+    alert("Inserisci valori validi.");
     return;
   }
 
   const brownianResult = simulateBrownianPath(n, T);
-  const processResult = buildABMAndGBM(
+
+  const gbmValues = buildGBM(
     brownianResult.times,
     brownianResult.brownian,
     mu,
@@ -75,40 +76,35 @@ function simulateProcesses() {
     s0
   );
 
-  updateResults(n, T, mu, sigma, s0, brownianResult, processResult);
-  updateChart(brownianResult.times, processResult.abm, processResult.gbm);
+  updateResults(n, T, mu, sigma, s0, brownianResult, gbmValues);
+  updateChart(brownianResult.times, gbmValues);
 }
 
+// Bottone n grande
 function simulateLargeN() {
   document.getElementById("nSteps").value = 1000;
   simulateProcesses();
 }
 
-function updateResults(n, T, mu, sigma, s0, brownianResult, processResult) {
+// Aggiorna risultati
+function updateResults(n, T, mu, sigma, s0, brownianResult, gbmValues) {
   document.getElementById("outN").textContent = n;
   document.getElementById("outT").textContent = T.toFixed(2);
   document.getElementById("outMu").textContent = mu.toFixed(2);
   document.getElementById("outSigma").textContent = sigma.toFixed(2);
   document.getElementById("outS0").textContent = s0.toFixed(2);
 
-  document.getElementById("finalABM").textContent =
-    processResult.abm[processResult.abm.length - 1].toFixed(4);
-
   document.getElementById("finalGBM").textContent =
-    processResult.gbm[processResult.gbm.length - 1].toFixed(4);
+    gbmValues[gbmValues.length - 1].toFixed(4);
 
   document.getElementById("plusCount").textContent = brownianResult.plusCount;
   document.getElementById("minusCount").textContent = brownianResult.minusCount;
 }
 
-function updateChart(times, abmValues, gbmValues) {
+// Grafico
+function updateChart(times, gbmValues) {
   const canvas = document.getElementById("processChart");
   if (!canvas) return;
-
-  if (typeof Chart === "undefined") {
-    console.error("Chart.js non è stato caricato.");
-    return;
-  }
 
   const ctx = canvas.getContext("2d");
 
@@ -122,18 +118,9 @@ function updateChart(times, abmValues, gbmValues) {
       labels: times,
       datasets: [
         {
-          label: "ABM",
-          data: abmValues,
-          borderColor: "#51b84d",
-          backgroundColor: "transparent",
-          tension: 0,
-          borderWidth: 2,
-          pointRadius: 0
-        },
-        {
           label: "GBM",
           data: gbmValues,
-          borderColor: "#1f3c88",
+          borderColor: "#51b84d",
           backgroundColor: "transparent",
           tension: 0,
           borderWidth: 2,
@@ -147,14 +134,12 @@ function updateChart(times, abmValues, gbmValues) {
       plugins: {
         legend: {
           labels: {
-            font: {
-              size: 14
-            }
+            font: { size: 14 }
           }
         },
         title: {
           display: true,
-          text: "Simulazione di ABM e GBM su [0, T]",
+          text: "Geometric Brownian Motion",
           font: {
             size: 18,
             weight: "bold"
@@ -186,6 +171,7 @@ function updateChart(times, abmValues, gbmValues) {
   });
 }
 
+// Reset
 function resetChart() {
   if (processChart) {
     processChart.destroy();
@@ -197,12 +183,12 @@ function resetChart() {
   document.getElementById("outMu").textContent = "-";
   document.getElementById("outSigma").textContent = "-";
   document.getElementById("outS0").textContent = "-";
-  document.getElementById("finalABM").textContent = "-";
   document.getElementById("finalGBM").textContent = "-";
   document.getElementById("plusCount").textContent = "-";
   document.getElementById("minusCount").textContent = "-";
 }
 
+// Avvio automatico
 window.onload = function () {
   simulateProcesses();
 };

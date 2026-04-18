@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Homework 5</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="hw5.css" />
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Menù</h2>
+
+    <a href="index.html" class="home-link">Home</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Homework ▼</button>
+      <div class="dropdown-content">
+        <a href="hw1.html">Homework 1</a>
+        <a href="hw2.html">Homework 2</a>
+        <a href="hw3.html">Homework 3</a>
+        <a href="hw4.html">Homework 4</a>
+        <a href="hw5.html">Homework 5</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="container-centrato">
+      <h1 class="main-title">Homework 5</h1>
+
+      <section class="card">
+        <h2>Application: ABM e GBM simulati a partire da una Random Walk scalata</h2>
+
+        <p class="intro-text">
+          In questa sezione estendo l’homework precedente aggiungendo la generazione del
+          <strong>Geometric Brownian Motion (GBM)</strong>. A partire da una Random Walk con
+          passi di Rademacher, costruisco una traiettoria che approssima il Moto Browniano
+          e la utilizzo per simulare sia un <strong>Arithmetic Brownian Motion (ABM)</strong>
+          sia un <strong>GBM</strong>.
+        </p>
+
+        <div class="controls">
+          <div class="input-group">
+            <label for="nSteps">Numero di passi (n):</label>
+            <input type="number" id="nSteps" value="200" min="10" step="10" />
+          </div>
+
+          <div class="input-group">
+            <label for="timeHorizon">Orizzonte temporale (T):</label>
+            <input type="number" id="timeHorizon" value="1" min="1" step="1" />
+          </div>
+
+          <div class="input-group">
+            <label for="muValue">Drift \( \mu \):</label>
+            <input type="number" id="muValue" value="0.10" step="0.01" />
+          </div>
+
+          <div class="input-group">
+            <label for="sigmaValue">Volatilità \( \sigma \):</label>
+            <input type="number" id="sigmaValue" value="0.20" min="0.01" step="0.01" />
+          </div>
+
+          <div class="input-group">
+            <label for="s0Value">Valore iniziale GBM \( S_0 \):</label>
+            <input type="number" id="s0Value" value="100" min="1" step="1" />
+          </div>
+
+          <div class="button-row">
+            <button type="button" onclick="simulateProcesses()">Simula processi</button>
+            <button type="button" onclick="simulateLargeN()">Prova con n grande</button>
+            <button type="button" onclick="resetChart()">Reset</button>
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <canvas id="processChart"></canvas>
+        </div>
+
+        <div class="results-box">
+          <p><strong>n:</strong> <span id="outN">-</span></p>
+          <p><strong>T:</strong> <span id="outT">-</span></p>
+          <p><strong>\( \mu \):</strong> <span id="outMu">-</span></p>
+          <p><strong>\( \sigma \):</strong> <span id="outSigma">-</span></p>
+          <p><strong>\( S_0 \):</strong> <span id="outS0">-</span></p>
+          <p><strong>Valore finale ABM:</strong> <span id="finalABM">-</span></p>
+          <p><strong>Valore finale GBM:</strong> <span id="finalGBM">-</span></p>
+          <p><strong>Passi +1:</strong> <span id="plusCount">-</span></p>
+          <p><strong>Passi -1:</strong> <span id="minusCount">-</span></p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Codice utilizzato</h2>
+
+        <p class="intro-text">
+          La simulazione parte dalla generazione di una traiettoria browniana discreta
+          tramite Random Walk scalata. Successivamente, sulla stessa traiettoria, vengono
+          costruiti l’ABM e il GBM.
+        </p>
+
+        <h3 class="code-title">JavaScript</h3>
+        <div class="code-box">
+<pre><code>function generateRademacher() {
+  return Math.random() &lt; 0.5 ? -1 : 1;
+}
+
+function simulateBrownianPath(n, T) {
+  const times = [0];
+  const brownian = [0];
+  let partialSum = 0;
+
+  for (let k = 1; k &lt;= n; k++) {
+    partialSum += generateRademacher();
+    times.push((k * T) / n);
+    brownian.push(partialSum / Math.sqrt(n));
+  }
+
+  return { times, brownian };
+}
+
+function buildABMAndGBM(times, brownian, mu, sigma, s0) {
+  const abm = [];
+  const gbm = [];
+
+  for (let i = 0; i &lt; times.length; i++) {
+    const t = times[i];
+    const w = brownian[i];
+
+    abm.push(mu * t + sigma * w);
+    gbm.push(s0 * Math.exp((mu - 0.5 * sigma * sigma) * t + sigma * w));
+  }
+
+  return { abm, gbm };
+}</code></pre>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Theory: ABM, GBM e processi a Mean Reversion</h2>
+
+        <div class="theory-text">
+          <p>
+            L’<strong>Arithmetic Brownian Motion (ABM)</strong> è uno dei modelli continui più
+            semplici per descrivere un processo stocastico. Si scrive come
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( X_t = X_0 + \mu t + \sigma W_t \)
+          </div>
+          <div class="formula-note">
+            dove \( \mu \) rappresenta il drift, \( \sigma \) la volatilità e \( W_t \) il Moto Browniano.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            In questo modello gli incrementi sono normali e indipendenti, e il processo evolve
+            in modo additivo. Per questo motivo, l’ABM può assumere anche valori negativi ed è
+            particolarmente utile come modello teorico di base.
+          </p>
+
+          <p>
+            Il <strong>Geometric Brownian Motion (GBM)</strong> è invece ottenuto imponendo una dinamica
+            moltiplicativa, ed è il modello classico per descrivere l’evoluzione dei prezzi in finanza.
+            La sua espressione è:
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( S_t = S_0 \exp\left[\left(\mu - \frac{\sigma^2}{2}\right)t + \sigma W_t\right] \)
+          </div>
+          <div class="formula-note">
+            Il GBM resta sempre positivo, poiché è costruito come esponenziale di un processo gaussiano.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Rispetto all’ABM, il GBM è più adatto a rappresentare grandezze che non possono diventare negative,
+            come i prezzi azionari. Inoltre, i rendimenti logaritmici risultano normalmente distribuiti.
+          </p>
+
+          <p>
+            Un’altra famiglia importante di processi stocastici è quella dei processi a
+            <strong>mean reversion</strong>, nei quali la dinamica tende a riportare il processo
+            verso un livello di equilibrio di lungo periodo.
+          </p>
+
+          <p>
+            Il caso più noto è il <strong>processo di Ornstein–Uhlenbeck</strong>, descritto da:
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( dX_t = \theta(\mu - X_t)\,dt + \sigma\,dW_t \)
+          </div>
+          <div class="formula-note">
+            dove \( \theta &gt; 0 \) misura la velocità di ritorno verso la media \( \mu \).
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            In questo caso, quando \( X_t \) si allontana dalla media di lungo periodo \( \mu \),
+            il termine \( \theta(\mu - X_t) \) esercita una forza di richiamo che tende a riportarlo
+            verso tale livello. Questo comportamento è molto diverso da quello del Moto Browniano,
+            che non presenta alcun meccanismo di rientro.
+          </p>
+
+          <p>
+            In sintesi, l’ABM descrive un’evoluzione additiva, il GBM una dinamica moltiplicativa
+            e sempre positiva, mentre il processo di Ornstein–Uhlenbeck rappresenta un modello
+            con <em>ritorno verso la media</em>. Questi tre esempi mostrano come piccole variazioni
+            nella struttura dell’equazione stocastica producano comportamenti qualitativamente molto differenti.
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="hw5.js"></script>
+</body>
+</html>

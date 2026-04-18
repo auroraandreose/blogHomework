@@ -93,7 +93,6 @@
           <p><strong>\( \mu \):</strong> <span id="outMu">-</span></p>
           <p><strong>\( \sigma \):</strong> <span id="outSigma">-</span></p>
           <p><strong>\( S_0 \):</strong> <span id="outS0">-</span></p>
-          <p><strong>Valore finale ABM:</strong> <span id="finalABM">-</span></p>
           <p><strong>Valore finale GBM:</strong> <span id="finalGBM">-</span></p>
           <p><strong>Passi +1:</strong> <span id="plusCount">-</span></p>
           <p><strong>Passi -1:</strong> <span id="minusCount">-</span></p>
@@ -103,15 +102,15 @@
       <section class="card">
         <h2>Codice utilizzato</h2>
 
-        <p class="intro-text">
-          La simulazione parte dalla generazione di una traiettoria browniana discreta
-          tramite Random Walk scalata. Successivamente, sulla stessa traiettoria, vengono
-          costruiti l’ABM e il GBM.
-        </p>
-
-        <h3 class="code-title">JavaScript</h3>
-        <div class="code-box">
-<pre><code>function generateRademacher() {
+      <p class="intro-text">
+  La simulazione parte dalla generazione di una traiettoria browniana discreta
+  tramite una Random Walk scalata. Su questa traiettoria viene poi costruito il
+  <strong>Geometric Brownian Motion (GBM)</strong>, utilizzando i parametri di drift
+  \( \mu \), volatilità \( \sigma \) e valore iniziale \( S_0 \).
+</p>
+      <h3 class="code-title">JavaScript</h3>
+<div class="code-box">
+  <pre><code>function generateRademacher() {
   return Math.random() &lt; 0.5 ? -1 : 1;
 }
 
@@ -129,21 +128,19 @@ function simulateBrownianPath(n, T) {
   return { times, brownian };
 }
 
-function buildABMAndGBM(times, brownian, mu, sigma, s0) {
-  const abm = [];
+function buildGBM(times, brownian, mu, sigma, s0) {
   const gbm = [];
 
   for (let i = 0; i &lt; times.length; i++) {
     const t = times[i];
     const w = brownian[i];
 
-    abm.push(mu * t + sigma * w);
     gbm.push(s0 * Math.exp((mu - 0.5 * sigma * sigma) * t + sigma * w));
   }
 
-  return { abm, gbm };
+  return gbm;
 }</code></pre>
-        </div>
+</div>
       </section>
 
       <section class="card theory-card">

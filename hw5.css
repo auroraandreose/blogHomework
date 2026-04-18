@@ -90,15 +90,23 @@
 .results-box {
   background: #ffffff;
   border: 1px solid #d7d7d7;
-  border-radius: 14px;
-  padding: 22px 24px;
+  border-radius: 12px;
+  padding: 16px 18px;
   text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 .results-box p {
-  font-size: 1.08rem;
-  margin: 14px 0;
+  font-size: 0.98rem;
+  margin: 8px 0;
   color: #111;
+}
+.results-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+  text-align: left;
 }
 
 .code-title {

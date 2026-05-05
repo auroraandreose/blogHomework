@@ -1,5 +1,4 @@
-let priceChart = null;
-let pnlChart = null;
+let strategyChart = null;
 
 function generateRademacher() {
   return Math.random() < 0.5 ? -1 : 1;
@@ -14,7 +13,7 @@ function simulateBrownianPath(n, T) {
   for (let k = 1; k <= n; k++) {
     partialSum += generateRademacher();
 
-    times.push(parseFloat(((k * T) / n).toFixed(2)));
+    times.push(parseFloat(((k * T) / n).toFixed(3)));
     brownian.push(partialSum / Math.sqrt(n));
   }
 
@@ -40,28 +39,27 @@ function applyTradingStrategy(prices) {
   const positions = [0];
 
   let position = 0;
-  let buyCount = 0;
-  let sellCount = 0;
+  let tradeCount = 0;
 
   for (let i = 1; i < prices.length; i++) {
-    if (prices[i] > prices[i - 1] && position === 0) {
-      position = 1;
-      buyCount++;
-    } else if (prices[i] < prices[i - 1] && position === 1) {
-      position = 0;
-      sellCount++;
-    }
-
     const stepPnL = position * (prices[i] - prices[i - 1]);
     pnl.push(pnl[i - 1] + stepPnL);
+
+    if (prices[i] > prices[i - 1] && position === 0) {
+      position = 1;
+      tradeCount++;
+    } else if (prices[i] < prices[i - 1] && position === 1) {
+      position = 0;
+      tradeCount++;
+    }
+
     positions.push(position);
   }
 
   return {
     pnl,
     positions,
-    buyCount,
-    sellCount
+    tradeCount
   };
 }
 
@@ -104,9 +102,8 @@ function simulateStrategy() {
   const strategyResult = applyTradingStrategy(prices);
   const maxDrawdown = computeMaximumDrawdown(strategyResult.pnl);
 
-  updateResults(n, T, mu, sigma, s0, strategyResult, maxDrawdown);
-  updatePriceChart(brownianResult.times, prices, strategyResult.positions);
-  updatePnLChart(brownianResult.times, strategyResult.pnl);
+  updateResults(prices, strategyResult, maxDrawdown);
+  updateChart(brownianResult.times, prices, strategyResult.pnl);
 }
 
 function simulateLargeN() {
@@ -114,142 +111,47 @@ function simulateLargeN() {
   simulateStrategy();
 }
 
-function updateResults(n, T, mu, sigma, s0, strategyResult, maxDrawdown) {
+function updateResults(prices, strategyResult, maxDrawdown) {
+  const finalGBM = prices[prices.length - 1];
   const finalPnL = strategyResult.pnl[strategyResult.pnl.length - 1];
 
-  document.getElementById("outN").textContent = n;
-  document.getElementById("outT").textContent = T.toFixed(2);
-  document.getElementById("outMu").textContent = mu.toFixed(2);
-  document.getElementById("outSigma").textContent = sigma.toFixed(2);
-  document.getElementById("outS0").textContent = s0.toFixed(2);
-
+  document.getElementById("finalGBM").textContent = finalGBM.toFixed(4);
   document.getElementById("finalPnL").textContent = finalPnL.toFixed(4);
   document.getElementById("maxDrawdown").textContent = maxDrawdown.toFixed(4);
-  document.getElementById("buyCount").textContent = strategyResult.buyCount;
-  document.getElementById("sellCount").textContent = strategyResult.sellCount;
+  document.getElementById("tradeCount").textContent = strategyResult.tradeCount;
 }
 
-function updatePriceChart(times, prices, positions) {
-  const canvas = document.getElementById("priceChart");
+function updateChart(times, prices, pnl) {
+  const canvas = document.getElementById("strategyChart");
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
 
-  if (priceChart) {
-    priceChart.destroy();
+  if (strategyChart) {
+    strategyChart.destroy();
   }
 
-  const buyPoints = [];
-  const sellPoints = [];
-
-  for (let i = 1; i < prices.length; i++) {
-    if (positions[i] === 1 && positions[i - 1] === 0) {
-      buyPoints.push({ x: times[i], y: prices[i] });
-    }
-
-    if (positions[i] === 0 && positions[i - 1] === 1) {
-      sellPoints.push({ x: times[i], y: prices[i] });
-    }
-  }
-
-  priceChart = new Chart(ctx, {
+  strategyChart = new Chart(ctx, {
     type: "line",
     data: {
       labels: times,
       datasets: [
         {
-          label: "Prezzo simulato tramite GBM",
+          label: "Prezzo simulato con GBM",
           data: prices,
           borderColor: "#51b84d",
           backgroundColor: "transparent",
+          yAxisID: "yPrice",
           tension: 0,
           borderWidth: 2,
           pointRadius: 0
         },
         {
-          label: "Buy",
-          data: buyPoints,
-          showLine: false,
-          pointRadius: 5,
-          pointStyle: "triangle",
-          backgroundColor: "#1f77b4",
-          borderColor: "#1f77b4"
-        },
-        {
-          label: "Sell",
-          data: sellPoints,
-          showLine: false,
-          pointRadius: 5,
-          pointStyle: "rectRot",
-          backgroundColor: "#d62728",
-          borderColor: "#d62728"
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      parsing: false,
-      plugins: {
-        legend: {
-          labels: {
-            font: { size: 14 }
-          }
-        },
-        title: {
-          display: true,
-          text: "GBM con segnali Buy/Sell",
-          font: {
-            size: 18,
-            weight: "bold"
-          }
-        }
-      },
-      scales: {
-        x: {
-          type: "linear",
-          title: {
-            display: true,
-            text: "Tempo"
-          },
-          ticks: {
-            maxTicksLimit: 10,
-            callback: function(value) {
-              return Number(value).toFixed(2);
-            }
-          }
-        },
-        y: {
-          title: {
-            display: true,
-            text: "Prezzo"
-          }
-        }
-      }
-    }
-  });
-}
-
-function updatePnLChart(times, pnl) {
-  const canvas = document.getElementById("pnlChart");
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-
-  if (pnlChart) {
-    pnlChart.destroy();
-  }
-
-  pnlChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: times,
-      datasets: [
-        {
-          label: "PnL cumulato",
+          label: "PnL cumulato della strategia",
           data: pnl,
-          borderColor: "#444",
+          borderColor: "#e67e22",
           backgroundColor: "transparent",
+          yAxisID: "yPnL",
           tension: 0,
           borderWidth: 2,
           pointRadius: 0
@@ -259,6 +161,10 @@ function updatePnLChart(times, pnl) {
     options: {
       responsive: true,
       maintainAspectRatio: true,
+      interaction: {
+        mode: "index",
+        intersect: false
+      },
       plugins: {
         legend: {
           labels: {
@@ -267,7 +173,7 @@ function updatePnLChart(times, pnl) {
         },
         title: {
           display: true,
-          text: "Profit and Loss cumulato",
+          text: "GBM e PnL cumulato della strategia Buy/Sell",
           font: {
             size: 18,
             weight: "bold"
@@ -288,10 +194,23 @@ function updatePnLChart(times, pnl) {
             }
           }
         },
-        y: {
+        yPrice: {
+          type: "linear",
+          position: "left",
           title: {
             display: true,
-            text: "PnL"
+            text: "Prezzo GBM"
+          }
+        },
+        yPnL: {
+          type: "linear",
+          position: "right",
+          title: {
+            display: true,
+            text: "PnL cumulato"
+          },
+          grid: {
+            drawOnChartArea: false
           }
         }
       }
@@ -299,26 +218,16 @@ function updatePnLChart(times, pnl) {
   });
 }
 
-function resetCharts() {
-  if (priceChart) {
-    priceChart.destroy();
-    priceChart = null;
+function resetChart() {
+  if (strategyChart) {
+    strategyChart.destroy();
+    strategyChart = null;
   }
 
-  if (pnlChart) {
-    pnlChart.destroy();
-    pnlChart = null;
-  }
-
-  document.getElementById("outN").textContent = "-";
-  document.getElementById("outT").textContent = "-";
-  document.getElementById("outMu").textContent = "-";
-  document.getElementById("outSigma").textContent = "-";
-  document.getElementById("outS0").textContent = "-";
+  document.getElementById("finalGBM").textContent = "-";
   document.getElementById("finalPnL").textContent = "-";
   document.getElementById("maxDrawdown").textContent = "-";
-  document.getElementById("buyCount").textContent = "-";
-  document.getElementById("sellCount").textContent = "-";
+  document.getElementById("tradeCount").textContent = "-";
 }
 
 window.onload = function () {

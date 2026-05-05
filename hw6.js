@@ -17,7 +17,10 @@ function simulateBrownianPath(n, T) {
     brownian.push(partialSum / Math.sqrt(n));
   }
 
-  return { times, brownian };
+  return {
+    times,
+    brownian
+  };
 }
 
 function buildGBM(times, brownian, mu, sigma, s0) {
@@ -39,7 +42,6 @@ function applyTradingStrategy(prices) {
   const positions = [0];
 
   let position = 0;
-  let tradeCount = 0;
 
   for (let i = 1; i < prices.length; i++) {
     const stepPnL = position * (prices[i] - prices[i - 1]);
@@ -47,10 +49,8 @@ function applyTradingStrategy(prices) {
 
     if (prices[i] > prices[i - 1] && position === 0) {
       position = 1;
-      tradeCount++;
     } else if (prices[i] < prices[i - 1] && position === 1) {
       position = 0;
-      tradeCount++;
     }
 
     positions.push(position);
@@ -58,8 +58,7 @@ function applyTradingStrategy(prices) {
 
   return {
     pnl,
-    positions,
-    tradeCount
+    positions
   };
 }
 
@@ -98,11 +97,18 @@ function simulateStrategy() {
   }
 
   const brownianResult = simulateBrownianPath(n, T);
-  const prices = buildGBM(brownianResult.times, brownianResult.brownian, mu, sigma, s0);
+  const prices = buildGBM(
+    brownianResult.times,
+    brownianResult.brownian,
+    mu,
+    sigma,
+    s0
+  );
+
   const strategyResult = applyTradingStrategy(prices);
   const maxDrawdown = computeMaximumDrawdown(strategyResult.pnl);
 
-  updateResults(prices, strategyResult, maxDrawdown);
+  updateResults(prices, strategyResult.pnl, maxDrawdown);
   updateChart(brownianResult.times, prices, strategyResult.pnl);
 }
 
@@ -111,14 +117,13 @@ function simulateLargeN() {
   simulateStrategy();
 }
 
-function updateResults(prices, strategyResult, maxDrawdown) {
+function updateResults(prices, pnl, maxDrawdown) {
   const finalGBM = prices[prices.length - 1];
-  const finalPnL = strategyResult.pnl[strategyResult.pnl.length - 1];
+  const finalPnL = pnl[pnl.length - 1];
 
   document.getElementById("finalGBM").textContent = finalGBM.toFixed(4);
   document.getElementById("finalPnL").textContent = finalPnL.toFixed(4);
   document.getElementById("maxDrawdown").textContent = maxDrawdown.toFixed(4);
-  document.getElementById("tradeCount").textContent = strategyResult.tradeCount;
 }
 
 function updateChart(times, prices, pnl) {
@@ -227,7 +232,6 @@ function resetChart() {
   document.getElementById("finalGBM").textContent = "-";
   document.getElementById("finalPnL").textContent = "-";
   document.getElementById("maxDrawdown").textContent = "-";
-  document.getElementById("tradeCount").textContent = "-";
 }
 
 window.onload = function () {

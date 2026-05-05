@@ -46,12 +46,12 @@
 
         <p class="intro-text">
           In questo homework utilizzo il <strong>Geometric Brownian Motion</strong> simulato
-          nell’homework precedente come processo stocastico per rappresentare il prezzo di un asset.
-          Su tale processo viene poi applicata una semplice strategia di trading basata su regole
-          di <strong>buy</strong> e <strong>sell</strong>. Infine vengono calcolati il
-          <strong>PnL</strong>, cioè il profitto o la perdita complessiva, e il
-          <strong>Maximum Drawdown</strong>, che misura il massimo declino del PnL rispetto al
-          massimo precedente.
+          nell’homework precedente per rappresentare l’andamento del prezzo di un asset.
+          Successivamente applico una semplice strategia di trading di tipo
+          <strong>trend following</strong>: si compra quando il prezzo tende a salire e si vende
+          quando il prezzo tende a scendere. Infine calcolo il <strong>PnL</strong>, cioè il
+          profitto o la perdita complessiva della strategia, e il <strong>Maximum Drawdown</strong>,
+          che misura il massimo calo del PnL rispetto al valore massimo raggiunto in precedenza.
         </p>
 
         <div class="controls">
@@ -83,28 +83,19 @@
           <div class="button-row">
             <button type="button" onclick="simulateStrategy()">Simula strategia</button>
             <button type="button" onclick="simulateLargeN()">Prova con n grande</button>
-            <button type="button" onclick="resetCharts()">Reset</button>
+            <button type="button" onclick="resetChart()">Reset</button>
           </div>
         </div>
 
-        <div class="chart-box">
-          <canvas id="priceChart"></canvas>
-        </div>
-
-        <div class="chart-box">
-          <canvas id="pnlChart"></canvas>
-        </div>
-
         <div class="results-box">
-          <p><strong>n:</strong> <span id="outN">-</span></p>
-          <p><strong>T:</strong> <span id="outT">-</span></p>
-          <p><strong>\( \mu \):</strong> <span id="outMu">-</span></p>
-          <p><strong>\( \sigma \):</strong> <span id="outSigma">-</span></p>
-          <p><strong>\( S_0 \):</strong> <span id="outS0">-</span></p>
+          <p><strong>Valore finale GBM:</strong> <span id="finalGBM">-</span></p>
           <p><strong>PnL finale:</strong> <span id="finalPnL">-</span></p>
           <p><strong>Maximum Drawdown:</strong> <span id="maxDrawdown">-</span></p>
-          <p><strong>Numero di Buy:</strong> <span id="buyCount">-</span></p>
-          <p><strong>Numero di Sell:</strong> <span id="sellCount">-</span></p>
+          <p><strong>Numero di operazioni:</strong> <span id="tradeCount">-</span></p>
+        </div>
+
+        <div class="chart-box">
+          <canvas id="strategyChart"></canvas>
         </div>
       </section>
 
@@ -112,10 +103,10 @@
         <h2>Codice utilizzato</h2>
 
         <p class="intro-text">
-          Il codice genera prima una traiettoria di GBM. Successivamente applica una strategia
-          elementare: se il prezzo cresce rispetto al periodo precedente, la posizione diventa
-          pari a 1, quindi si compra; se il prezzo diminuisce, la posizione diventa pari a 0,
-          quindi si vende. Il PnL viene aggiornato in base alla posizione detenuta.
+          La simulazione parte dalla generazione di un prezzo tramite GBM. La strategia osserva
+          la variazione del prezzo: se il prezzo aumenta viene mantenuta una posizione di acquisto,
+          mentre se il prezzo diminuisce la posizione viene chiusa. Il PnL cumulato viene poi
+          aggiornato lungo tutta la traiettoria.
         </p>
 
         <h3 class="code-title">JavaScript</h3>
@@ -126,24 +117,24 @@
   const positions = [0];
 
   let position = 0;
-  let buyCount = 0;
-  let sellCount = 0;
+  let tradeCount = 0;
 
   for (let i = 1; i &lt; prices.length; i++) {
+    const stepPnL = position * (prices[i] - prices[i - 1]);
+    pnl.push(pnl[i - 1] + stepPnL);
+
     if (prices[i] &gt; prices[i - 1] && position === 0) {
       position = 1;
-      buyCount++;
+      tradeCount++;
     } else if (prices[i] &lt; prices[i - 1] && position === 1) {
       position = 0;
-      sellCount++;
+      tradeCount++;
     }
 
-    const dailyPnL = position * (prices[i] - prices[i - 1]);
-    pnl.push(pnl[i - 1] + dailyPnL);
     positions.push(position);
   }
 
-  return { pnl, positions, buyCount, sellCount };
+  return { pnl, positions, tradeCount };
 }
 
 function computeMaximumDrawdown(pnl) {
@@ -151,15 +142,9 @@ function computeMaximumDrawdown(pnl) {
   let maxDrawdown = 0;
 
   for (let i = 1; i &lt; pnl.length; i++) {
-    if (pnl[i] &gt; runningMax) {
-      runningMax = pnl[i];
-    }
-
+    runningMax = Math.max(runningMax, pnl[i]);
     const drawdown = runningMax - pnl[i];
-
-    if (drawdown &gt; maxDrawdown) {
-      maxDrawdown = drawdown;
-    }
+    maxDrawdown = Math.max(maxDrawdown, drawdown);
   }
 
   return maxDrawdown;
@@ -173,7 +158,7 @@ function computeMaximumDrawdown(pnl) {
         <div class="theory-text">
           <p>
             Il <strong>Geometric Brownian Motion</strong> è un processo stocastico spesso utilizzato
-            per rappresentare l’evoluzione del prezzo di un asset finanziario. La sua espressione è:
+            per descrivere l’evoluzione di un prezzo finanziario. La sua formula è:
           </p>
         </div>
 
@@ -182,37 +167,16 @@ function computeMaximumDrawdown(pnl) {
             \( S_t = S_0 \exp\left[\left(\mu - \frac{\sigma^2}{2}\right)t + \sigma W_t\right] \)
           </div>
           <div class="formula-note">
-            dove \( S_0 \) è il prezzo iniziale, \( \mu \) il drift, \( \sigma \) la volatilità e \( W_t \) il Moto Browniano.
+            dove \( S_0 \) è il valore iniziale, \( \mu \) il drift, \( \sigma \) la volatilità e \( W_t \) il Moto Browniano.
           </div>
         </div>
 
         <div class="theory-text">
           <p>
-            Dopo aver simulato il prezzo tramite GBM, viene introdotta una strategia molto semplice.
-            La regola scelta è di tipo trend-following: se il prezzo aumenta rispetto al periodo
-            precedente, si assume una posizione di acquisto; se invece il prezzo diminuisce,
-            si chiude la posizione.
-          </p>
-        </div>
-
-        <div class="formula-box">
-          <div class="formula-main">
-            \( \text{Position}_t =
-            \begin{cases}
-            1 & \text{se } S_t > S_{t-1} \\
-            0 & \text{se } S_t < S_{t-1}
-            \end{cases} \)
-          </div>
-          <div class="formula-note">
-            La posizione vale 1 quando si è investiti nel mercato e 0 quando si resta fuori.
-          </div>
-        </div>
-
-        <div class="theory-text">
-          <p>
-            Il <strong>PnL</strong>, cioè profit and loss, misura il profitto o la perdita generata
-            dalla strategia. Se la posizione è pari a 1, il PnL varia insieme al prezzo; se invece
-            la posizione è pari a 0, il PnL rimane invariato.
+            Sul prezzo simulato viene applicata una strategia semplice: se il prezzo aumenta
+            rispetto al periodo precedente, la strategia assume una posizione di acquisto;
+            se invece il prezzo diminuisce, la posizione viene chiusa. In questo modo la strategia
+            cerca di seguire la direzione del mercato.
           </p>
         </div>
 
@@ -221,15 +185,15 @@ function computeMaximumDrawdown(pnl) {
             \( PnL_t = PnL_{t-1} + Position_{t-1}(S_t - S_{t-1}) \)
           </div>
           <div class="formula-note">
-            Il PnL finale rappresenta il risultato complessivo della strategia.
+            Se la posizione è pari a 1, il PnL segue la variazione del prezzo; se è pari a 0, il PnL resta invariato.
           </div>
         </div>
 
         <div class="theory-text">
           <p>
-            Il <strong>Drawdown</strong> misura invece la perdita rispetto al massimo valore del PnL
-            raggiunto fino a un certo istante. È quindi un indicatore utile per valutare non solo
-            il guadagno finale, ma anche il rischio sostenuto durante la strategia.
+            Il <strong>Drawdown</strong> misura la perdita rispetto al massimo valore del PnL
+            raggiunto fino a quel momento. Il <strong>Maximum Drawdown</strong> è il drawdown
+            massimo osservato lungo tutta la simulazione.
           </p>
         </div>
 
@@ -238,15 +202,15 @@ function computeMaximumDrawdown(pnl) {
             \( DD_t = \max_{s \leq t}(PnL_s) - PnL_t \)
           </div>
           <div class="formula-note">
-            Il Maximum Drawdown è il valore massimo assunto dal drawdown lungo tutta la traiettoria.
+            Un valore elevato di Maximum Drawdown indica che la strategia ha subito una perdita rilevante rispetto al suo massimo precedente.
           </div>
         </div>
 
         <div class="theory-text">
           <p>
-            In sintesi, questo homework mostra come un processo stocastico possa essere utilizzato
-            non solo per simulare l’andamento di un prezzo, ma anche per testare una semplice
-            strategia operativa e valutarne il risultato attraverso PnL e Maximum Drawdown.
+            In conclusione, l’Homework 6 mostra come un processo stocastico possa essere usato
+            per simulare un prezzo e per valutare una semplice strategia operativa attraverso
+            due indicatori principali: il PnL finale e il Maximum Drawdown.
           </p>
         </div>
       </section>

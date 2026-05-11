@@ -1,1 +1,498 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Homework 7</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="hw7.css" />
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+
+<body>
+  <div class="sidebar">
+    <h2>Menù</h2>
+
+    <a href="index.html" class="home-link">Home</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Homework ▼</button>
+      <div class="dropdown-content">
+        <a href="hw1.html">Homework 1</a>
+        <a href="hw2.html">Homework 2</a>
+        <a href="hw3.html">Homework 3</a>
+        <a href="hw4.html">Homework 4</a>
+        <a href="hw5.html">Homework 5</a>
+        <a href="hw6.html">Homework 6</a>
+        <a href="hw7.html">Homework 7</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <div class="container-centrato">
+      <h1 class="main-title">Homework 7</h1>
+
+      <section class="card">
+        <h2>Introduzione</h2>
+
+        <p class="intro-text">
+          Questo homework è dedicato ai fondamenti teorici della probabilità moderna.
+          L’obiettivo è presentare l’impostazione assiomatica di Kolmogorov e il suo
+          legame con la teoria della misura, per poi richiamare alcuni risultati centrali
+          della teoria della probabilità e dei processi aleatori: la legge dei grandi numeri,
+          il teorema del limite centrale, il principio di invarianza e il moto browniano.
+        </p>
+
+        <p class="intro-text">
+          Nella parte finale viene aggiunta una sezione opzionale dedicata alle opzioni
+          finanziarie, considerate come strumenti derivati, con un semplice esempio grafico
+          di payoff.
+        </p>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Impostazione assiomatica di Kolmogorov</h2>
+
+        <div class="theory-text">
+          <p>
+            L’impostazione assiomatica di Kolmogorov fornisce una base rigorosa alla teoria
+            della probabilità. In questo approccio, la probabilità non viene definita in modo
+            intuitivo come “frequenza” o “grado di fiducia”, ma come una misura matematica
+            costruita su uno spazio di eventi.
+          </p>
+
+          <p>
+            Uno spazio di probabilità è una terna:
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( (\Omega, \mathcal{F}, P) \)
+          </div>
+          <div class="formula-note">
+            Dove \( \Omega \) è lo spazio campionario, \( \mathcal{F} \) è una sigma-algebra
+            di eventi e \( P \) è una misura di probabilità.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Gli assiomi di Kolmogorov sono tre. Il primo stabilisce che la probabilità di ogni
+            evento deve essere non negativa. Il secondo impone che la probabilità dell’intero
+            spazio campionario sia pari a uno. Il terzo riguarda l’additività numerabile:
+            se gli eventi sono disgiunti, la probabilità della loro unione è uguale alla somma
+            delle singole probabilità.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( P(A) \geq 0, \quad P(\Omega)=1 \)
+          </div>
+          <div class="formula-note">
+            La probabilità è sempre non negativa e l’evento certo ha probabilità uno.
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( P\left(\bigcup_{i=1}^{\infty} A_i\right)
+            = \sum_{i=1}^{\infty} P(A_i) \)
+          </div>
+          <div class="formula-note">
+            La proprietà vale per eventi \( A_i \) a due a due disgiunti.
+          </div>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Relazione con la teoria della misura</h2>
+
+        <div class="theory-text">
+          <p>
+            La teoria della misura è il linguaggio matematico su cui si fonda la probabilità
+            moderna. In questo contesto, una probabilità è una particolare misura, cioè una
+            funzione che assegna un valore numerico agli insiemi misurabili.
+          </p>
+
+          <p>
+            La differenza principale rispetto a una misura generale è che la misura di
+            probabilità è normalizzata: l’intero spazio campionario ha misura pari a uno.
+            Per questo motivo, la probabilità può essere vista come una misura finita.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( P : \mathcal{F} \rightarrow [0,1] \)
+          </div>
+          <div class="formula-note">
+            La probabilità assegna a ogni evento misurabile un valore compreso tra 0 e 1.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Anche le variabili aleatorie sono definite in modo rigoroso attraverso la teoria
+            della misura. Una variabile aleatoria è infatti una funzione misurabile che associa
+            a ogni esito dello spazio campionario un numero reale.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( X : \Omega \rightarrow \mathbb{R} \)
+          </div>
+          <div class="formula-note">
+            La variabile aleatoria trasforma gli esiti casuali in valori numerici.
+          </div>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Legge dei grandi numeri debole e forte</h2>
+
+        <div class="theory-text">
+          <p>
+            La legge dei grandi numeri formalizza l’idea secondo cui, ripetendo molte volte
+            un esperimento casuale, la media campionaria tende ad avvicinarsi al valore atteso.
+            È uno dei risultati fondamentali che collega la probabilità teorica alla frequenza
+            osservata nei dati.
+          </p>
+
+          <p>
+            Siano \( X_1, X_2, \ldots, X_n \) variabili aleatorie indipendenti e identicamente
+            distribuite, con valore atteso \( \mu \). La media campionaria è:
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( \overline{X}_n = \frac{1}{n}\sum_{i=1}^{n}X_i \)
+          </div>
+          <div class="formula-note">
+            La media campionaria riassume le osservazioni ottenute fino all’istante \( n \).
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            La legge debole dei grandi numeri afferma che la media campionaria converge in
+            probabilità al valore atteso.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( \overline{X}_n \xrightarrow{P} \mu \)
+          </div>
+          <div class="formula-note">
+            Per \( n \) grande, la probabilità che la media sia lontana da \( \mu \) diventa piccola.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            La legge forte dei grandi numeri è una versione più intensa del risultato, perché
+            afferma la convergenza quasi certa della media campionaria al valore atteso.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( \overline{X}_n \xrightarrow{q.c.} \mu \)
+          </div>
+          <div class="formula-note">
+            La convergenza quasi certa è più forte della convergenza in probabilità.
+          </div>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Teorema del limite centrale iid</h2>
+
+        <div class="theory-text">
+          <p>
+            Il teorema del limite centrale descrive il comportamento della somma di molte
+            variabili aleatorie indipendenti e identicamente distribuite. Esso afferma che,
+            sotto opportune condizioni, la somma standardizzata converge in distribuzione
+            a una normale standard.
+          </p>
+
+          <p>
+            Se \( X_1, X_2, \ldots, X_n \) sono iid, con media \( \mu \) e varianza finita
+            \( \sigma^2 \), allora:
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( \frac{\sum_{i=1}^{n}X_i - n\mu}{\sigma\sqrt{n}}
+            \xrightarrow{d} N(0,1) \)
+          </div>
+          <div class="formula-note">
+            La somma viene centrata sottraendo la media e scalata dividendo per la deviazione standard.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Questo risultato spiega perché la distribuzione normale compare così spesso nella
+            statistica: molte quantità osservate possono essere viste come somma o media di tanti
+            piccoli contributi casuali.
+          </p>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>CLT non iid e condizione di Lindeberg</h2>
+
+        <div class="theory-text">
+          <p>
+            Il teorema del limite centrale può essere esteso anche al caso di variabili indipendenti
+            ma non identicamente distribuite. In questo caso non basta richiedere indipendenza e
+            varianza finita: serve una condizione che impedisca a una singola variabile di dominare
+            la somma totale.
+          </p>
+
+          <p>
+            Una delle condizioni più importanti è la condizione di Lindeberg. L’idea è che il
+            contributo delle osservazioni troppo grandi, rispetto alla scala complessiva della
+            somma, diventi trascurabile al crescere di \( n \).
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( s_n^2 = \sum_{i=1}^{n}\sigma_i^2 \)
+          </div>
+          <div class="formula-note">
+            \( s_n^2 \) rappresenta la varianza complessiva della somma.
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( \frac{1}{s_n^2}\sum_{i=1}^{n}
+            \mathbb{E}\left[(X_i-\mu_i)^2
+            \mathbf{1}_{\{|X_i-\mu_i|>\varepsilon s_n\}}\right]
+            \rightarrow 0 \)
+          </div>
+          <div class="formula-note">
+            Questa è la condizione di Lindeberg, valida per ogni \( \varepsilon > 0 \).
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Se la condizione è soddisfatta, allora la somma standardizzata converge ancora a
+            una normale standard.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( \frac{\sum_{i=1}^{n}(X_i-\mu_i)}{s_n}
+            \xrightarrow{d} N(0,1) \)
+          </div>
+          <div class="formula-note">
+            Il CLT resta valido anche senza l’ipotesi di identica distribuzione.
+          </div>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Invariance Principle</h2>
+
+        <div class="theory-text">
+          <p>
+            Il principio di invarianza può essere visto come una generalizzazione funzionale
+            del teorema del limite centrale. Mentre il CLT riguarda la convergenza di una singola
+            variabile standardizzata, il principio di invarianza riguarda la convergenza di un
+            intero processo stocastico.
+          </p>
+
+          <p>
+            Consideriamo una random walk costruita come somma parziale di variabili aleatorie
+            indipendenti, centrate e con varianza finita. Se la random walk viene opportunamente
+            scalata nel tempo e nello spazio, essa converge verso un processo di Wiener, cioè
+            verso un moto browniano.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( W_n(t) = \frac{1}{\sqrt{n}}
+            \sum_{i=1}^{\lfloor nt \rfloor} X_i \)
+          </div>
+          <div class="formula-note">
+            La somma parziale viene scalata con \( \sqrt{n} \), come nel teorema del limite centrale.
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( W_n(t) \Rightarrow W(t) \)
+          </div>
+          <div class="formula-note">
+            Il processo scalato converge in distribuzione al moto browniano.
+          </div>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Moto browniano e processo di Wiener</h2>
+
+        <div class="theory-text">
+          <p>
+            Il moto browniano, o processo di Wiener, è uno dei processi stocastici più importanti
+            della probabilità moderna. Esso rappresenta il limite continuo di una random walk
+            opportunamente scalata ed è alla base di molti modelli in statistica, fisica e finanza.
+          </p>
+
+          <p>
+            Un processo \( W(t) \) è un moto browniano standard se soddisfa alcune proprietà
+            fondamentali: parte da zero, ha incrementi indipendenti, ha incrementi gaussiani e
+            possiede traiettorie continue.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( W(0)=0 \)
+          </div>
+          <div class="formula-note">
+            Il processo parte dall’origine.
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( W(t)-W(s) \sim N(0,t-s), \quad 0 \leq s < t \)
+          </div>
+          <div class="formula-note">
+            Gli incrementi sono gaussiani con media zero e varianza pari alla lunghezza dell’intervallo.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Il moto browniano svolge quindi un ruolo centrale nel principio di invarianza:
+            rappresenta il processo limite verso cui converge una vasta classe di processi
+            discreti costruiti tramite somme parziali.
+          </p>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Conclusioni</h2>
+
+        <div class="theory-text">
+          <p>
+            L’impostazione assiomatica di Kolmogorov consente di costruire la probabilità su
+            basi matematiche rigorose, collegandola direttamente alla teoria della misura.
+            A partire da questa struttura si possono definire eventi, variabili aleatorie,
+            valori attesi e processi stocastici.
+          </p>
+
+          <p>
+            La legge dei grandi numeri e il teorema del limite centrale descrivono il comportamento
+            limite di medie e somme di variabili aleatorie. Il principio di invarianza estende
+            questa idea a livello di processo, mostrando come una random walk scalata possa
+            convergere al moto browniano.
+          </p>
+
+          <p>
+            Questi risultati rappresentano pilastri fondamentali della probabilità e costituiscono
+            la base teorica di molte applicazioni statistiche e finanziarie.
+          </p>
+        </div>
+      </section>
+
+      <section class="card theory-card">
+        <h2>Extra opzionale: opzioni, payoff e strategie classiche</h2>
+
+        <div class="theory-text">
+          <p>
+            Le opzioni sono strumenti finanziari derivati, cioè contratti il cui valore dipende
+            dall’andamento di un’attività sottostante, detta underlying. Esempi di underlying sono
+            azioni, indici, valute o materie prime.
+          </p>
+
+          <p>
+            Una call option dà il diritto di acquistare il sottostante a un prezzo prefissato,
+            detto strike price. Una put option dà invece il diritto di vendere il sottostante
+            allo strike price.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{Call} = \max(S_T-K,0) \)
+          </div>
+          <div class="formula-note">
+            La call genera payoff positivo se il prezzo finale \( S_T \) supera lo strike \( K \).
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{Put} = \max(K-S_T,0) \)
+          </div>
+          <div class="formula-note">
+            La put genera payoff positivo se il prezzo finale \( S_T \) è inferiore allo strike \( K \).
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="input-group">
+            <label for="strikeValue">Strike price \( K \):</label>
+            <input type="number" id="strikeValue" value="100" min="1" step="1" />
+          </div>
+
+          <div class="input-group">
+            <label for="strategyType">Strategia:</label>
+            <select id="strategyType">
+              <option value="call">Long Call</option>
+              <option value="put">Long Put</option>
+              <option value="straddle">Long Straddle</option>
+            </select>
+          </div>
+
+          <div class="button-row">
+            <button type="button" onclick="updateOptionChart()">Aggiorna payoff</button>
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <canvas id="optionPayoffChart"></canvas>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Tra le strategie classiche troviamo la long call, usata quando ci si aspetta un aumento
+            del prezzo del sottostante, la long put, usata quando ci si aspetta una diminuzione,
+            e lo straddle, che combina una call e una put con lo stesso strike. Lo straddle può
+            risultare utile quando ci si aspetta un forte movimento del prezzo, ma non si conosce
+            con certezza la direzione.
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="hw7.js"></script>
+</body>
+</html>

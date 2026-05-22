@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Homework 8</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="hw8.css" />
+
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <div class="sidebar">
+    <h2>Menù</h2>
+
+    <a href="index.html" class="home-link">Home</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Homework ▼</button>
+
+      <div class="dropdown-content">
+        <a href="hw1.html">Homework 1</a>
+        <a href="hw2.html">Homework 2</a>
+        <a href="hw3.html">Homework 3</a>
+        <a href="hw4.html">Homework 4</a>
+        <a href="hw5.html">Homework 5</a>
+        <a href="hw6.html">Homework 6</a>
+        <a href="hw7.html">Homework 7</a>
+        <a href="hw8.html">Homework 8</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+
+    <div class="container-centrato">
+
+      <h1 class="main-title">Homework 8</h1>
+
+      <!-- INTRODUZIONE -->
+
+      <section class="card">
+
+        <h2>Introduzione</h2>
+
+        <p class="intro-text">
+          In questo homework viene sviluppato il tema dei payoff delle opzioni
+          finanziarie introdotto nell’homework precedente.
+        </p>
+
+        <p class="intro-text">
+          L’obiettivo è costruire un programma più generale in grado di gestire
+          simultaneamente più opzioni, ciascuna caratterizzata da tipologia,
+          strike price e quantità.
+        </p>
+
+        <p class="intro-text">
+          Il payoff complessivo della strategia viene ottenuto sommando i payoff
+          delle singole opzioni presenti nel portafoglio.
+        </p>
+
+      </section>
+
+      <!-- TEORIA -->
+
+      <section class="card theory-card">
+
+        <h2>Payoff delle opzioni</h2>
+
+        <div class="theory-text">
+
+          <p>
+            Le opzioni finanziarie sono strumenti derivati il cui valore dipende
+            dall’andamento di un’attività sottostante.
+          </p>
+
+          <p>
+            I quattro payoff fondamentali considerati sono:
+          </p>
+
+          <ul class="payoff-list">
+            <li>Long Call</li>
+            <li>Long Put</li>
+            <li>Short Call</li>
+            <li>Short Put</li>
+          </ul>
+
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{Call} = \max(S_T-K,0) \)
+          </div>
+
+          <div class="formula-note">
+            Payoff di una call option europea.
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{Put} = \max(K-S_T,0) \)
+          </div>
+
+          <div class="formula-note">
+            Payoff di una put option europea.
+          </div>
+        </div>
+
+        <div class="theory-text">
+
+          <p>
+            Un portafoglio di opzioni può essere costruito combinando differenti
+            contratti con quantità positive o negative.
+          </p>
+
+          <p>
+            Una quantità positiva rappresenta una posizione long, mentre una
+            quantità negativa rappresenta una posizione short.
+          </p>
+
+        </div>
+
+        <div class="formula-box">
+
+          <div class="formula-main">
+            \( \Pi(S_T)=\sum_{i=1}^{n} q_i \cdot payoff_i(S_T) \)
+          </div>
+
+          <div class="formula-note">
+            Il payoff globale della strategia è ottenuto sommando i payoff
+            delle singole opzioni.
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- APPLICAZIONE -->
+
+      <section class="card">
+
+        <h2>Applicazione interattiva</h2>
+
+        <p class="intro-text">
+          Inserire le opzioni che compongono il portafoglio e visualizzare
+          il payoff complessivo della strategia.
+        </p>
+
+        <div class="controls">
+
+          <div class="input-group">
+            <label for="optionType">Tipo opzione:</label>
+
+            <select id="optionType">
+              <option value="call">Call</option>
+              <option value="put">Put</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="strikeValue">Strike price:</label>
+            <input type="number" id="strikeValue" value="100" />
+          </div>
+
+          <div class="input-group">
+            <label for="quantityValue">Quantità:</label>
+            <input type="number" id="quantityValue" value="1" />
+          </div>
+
+          <div class="button-row">
+            <button onclick="addOption()">
+              Aggiungi opzione
+            </button>
+
+            <button onclick="clearPortfolio()">
+              Reset portafoglio
+            </button>
+          </div>
+
+        </div>
+
+        <div class="portfolio-box">
+
+          <h3>Portafoglio corrente</h3>
+
+          <ul id="portfolioList"></ul>
+
+        </div>
+
+        <div class="chart-box">
+          <canvas id="portfolioChart"></canvas>
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+
+  <script src="hw8.js"></script>
+
+</body>
+</html>

@@ -3,13 +3,17 @@ let portfolioChart = null;
 
 function addOption() {
 
-  const type = document.getElementById("optionType").value;
+  const type =
+    document.getElementById("optionType").value;
+
+  const position =
+    document.getElementById("positionType").value;
 
   const strike = parseFloat(
     document.getElementById("strikeValue").value
   );
 
-  const quantity = parseFloat(
+  let quantity = parseFloat(
     document.getElementById("quantityValue").value
   );
 
@@ -18,13 +22,20 @@ function addOption() {
     return;
   }
 
-  if (isNaN(quantity) || quantity === 0) {
-    alert("Inserisci una quantità diversa da zero.");
+  if (isNaN(quantity) || quantity <= 0) {
+    alert("Inserisci una quantità positiva.");
     return;
+  }
+
+  if (position === "short") {
+    quantity = -Math.abs(quantity);
+  } else {
+    quantity = Math.abs(quantity);
   }
 
   portfolio.push({
     type: type,
+    position: position,
     strike: strike,
     quantity: quantity
   });
@@ -34,6 +45,7 @@ function addOption() {
 }
 
 function clearPortfolio() {
+
   portfolio = [];
 
   updatePortfolioList();
@@ -42,14 +54,17 @@ function clearPortfolio() {
 
 function updatePortfolioList() {
 
-  const list = document.getElementById("portfolioList");
+  const list =
+    document.getElementById("portfolioList");
 
   list.innerHTML = "";
 
   if (portfolio.length === 0) {
 
     const li = document.createElement("li");
-    li.textContent = "Nessuna opzione inserita.";
+
+    li.textContent =
+      "Nessuna opzione inserita.";
 
     list.appendChild(li);
 
@@ -60,13 +75,12 @@ function updatePortfolioList() {
 
     const li = document.createElement("li");
 
-    const position =
-      option.quantity > 0 ? "Long" : "Short";
-
     li.textContent =
-      `${index + 1}) ${position} ${option.type.toUpperCase()} | ` +
+      `${index + 1}) ` +
+      `${option.position.toUpperCase()} ` +
+      `${option.type.toUpperCase()} | ` +
       `Strike = ${option.strike} | ` +
-      `Quantità = ${option.quantity}`;
+      `Quantità = ${Math.abs(option.quantity)}`;
 
     list.appendChild(li);
   });
@@ -87,7 +101,8 @@ function computeOptionPayoff(type, s, k) {
 
 function updatePortfolioChart() {
 
-  const canvas = document.getElementById("portfolioChart");
+  const canvas =
+    document.getElementById("portfolioChart");
 
   if (!canvas) return;
 
@@ -138,13 +153,15 @@ function updatePortfolioChart() {
 
       datasets: [
         {
-          label: "Payoff totale del portafoglio",
+          label:
+            "Payoff totale del portafoglio",
 
           data: totalPayoff,
 
           borderColor: "#51b84d",
 
-          backgroundColor: "rgba(81,184,77,0.12)",
+          backgroundColor:
+            "rgba(81,184,77,0.12)",
 
           fill: true,
 
@@ -176,7 +193,8 @@ function updatePortfolioChart() {
         title: {
           display: true,
 
-          text: "Payoff globale della strategia",
+          text:
+            "Payoff globale della strategia",
 
           font: {
             size: 18,
@@ -191,7 +209,8 @@ function updatePortfolioChart() {
 
           title: {
             display: true,
-            text: "Prezzo finale del sottostante"
+            text:
+              "Prezzo finale del sottostante"
           },
 
           ticks: {

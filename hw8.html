@@ -1,85 +1,188 @@
-<section class="card theory-card">
-  <h2>Payoff delle opzioni e strategie combinate</h2>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <div class="theory-text">
-    <p>
-      Le opzioni finanziarie sono strumenti derivati il cui valore dipende dal prezzo
-      di un'attività sottostante. Alla scadenza del contratto, il payoff dell'opzione
-      dipende dal confronto tra il prezzo finale del sottostante \(S_T\) e lo strike
-      price \(K\).
-    </p>
+  <title>Homework 8</title>
 
-    <p>
-      I quattro payoff fondamentali sono: Long Call, Short Call, Long Put e Short Put.
-      Una posizione long rappresenta l'acquisto dell'opzione, mentre una posizione short
-      rappresenta la vendita dell'opzione.
-    </p>
-  </div>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="hw8.css" />
 
-  <div class="formula-box">
-    <div class="formula-main">
-      \( Payoff_{LC}(S_T)=\max(S_T-K,0) \)
-    </div>
-    <div class="formula-note">
-      Long Call: diritto di acquistare il sottostante allo strike price \(K\).
-    </div>
-  </div>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)'], ['$', '$']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
 
-  <div class="formula-box">
-    <div class="formula-main">
-      \( Payoff_{SC}(S_T)=-\max(S_T-K,0) \)
-    </div>
-    <div class="formula-note">
-      Short Call: vendita di una call option.
-    </div>
-  </div>
+<body>
+  <div class="sidebar">
+    <h2>Menù</h2>
 
-  <div class="formula-box">
-    <div class="formula-main">
-      \( Payoff_{LP}(S_T)=\max(K-S_T,0) \)
-    </div>
-    <div class="formula-note">
-      Long Put: diritto di vendere il sottostante allo strike price \(K\).
+    <a href="index.html" class="home-link">Home</a>
+
+    <div class="dropdown">
+      <button class="dropbtn">Homework ▼</button>
+      <div class="dropdown-content">
+        <a href="hw1.html">Homework 1</a>
+        <a href="hw2.html">Homework 2</a>
+        <a href="hw3.html">Homework 3</a>
+        <a href="hw4.html">Homework 4</a>
+        <a href="hw5.html">Homework 5</a>
+        <a href="hw6.html">Homework 6</a>
+        <a href="hw7.html">Homework 7</a>
+        <a href="hw8.html">Homework 8</a>
+      </div>
     </div>
   </div>
 
-  <div class="formula-box">
-    <div class="formula-main">
-      \( Payoff_{SP}(S_T)=-\max(K-S_T,0) \)
-    </div>
-    <div class="formula-note">
-      Short Put: vendita di una put option.
+  <div class="main-content">
+    <div class="container-centrato">
+      <h1 class="main-title">Homework 8</h1>
+
+      <section class="card theory-card">
+        <h2>Payoff delle opzioni e strategie combinate</h2>
+
+        <div class="theory-text">
+          <p>
+            Le opzioni finanziarie sono strumenti derivati il cui valore dipende dal prezzo
+            di un'attività sottostante. Alla scadenza del contratto, il payoff dell'opzione
+            dipende dal confronto tra il prezzo finale del sottostante \(S_T\) e lo strike
+            price \(K\).
+          </p>
+
+          <p>
+            I quattro payoff fondamentali sono: Long Call, Short Call, Long Put e Short Put.
+            Una posizione long rappresenta l'acquisto dell'opzione, mentre una posizione short
+            rappresenta la vendita dell'opzione.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{LC}(S_T)=\max(S_T-K,0) \)
+          </div>
+          <div class="formula-note">
+            Long Call: diritto di acquistare il sottostante allo strike price \(K\).
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{SC}(S_T)=-\max(S_T-K,0) \)
+          </div>
+          <div class="formula-note">
+            Short Call: vendita di una call option.
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{LP}(S_T)=\max(K-S_T,0) \)
+          </div>
+          <div class="formula-note">
+            Long Put: diritto di vendere il sottostante allo strike price \(K\).
+          </div>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{SP}(S_T)=-\max(K-S_T,0) \)
+          </div>
+          <div class="formula-note">
+            Short Put: vendita di una put option.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            L'obiettivo dell'homework è generalizzare questi quattro casi base. Invece di
+            considerare una sola opzione, si considera un portafoglio formato da una lista
+            arbitraria di opzioni, ciascuna con il proprio tipo, strike price, posizione e quantità.
+          </p>
+
+          <p>
+            Il payoff globale della strategia è dato dalla somma dei payoff delle singole
+            opzioni considerate. In questo modo è possibile costruire strategie più complesse,
+            combinando call e put con strike e quantità differenti.
+          </p>
+        </div>
+
+        <div class="formula-box">
+          <div class="formula-main">
+            \( Payoff_{tot}(S_T)=\sum_{i=1}^{n} q_i \cdot Payoff_i(S_T) \)
+          </div>
+          <div class="formula-note">
+            Dove \(q_i\) rappresenta la quantità della \(i\)-esima opzione.
+          </div>
+        </div>
+
+        <div class="theory-text">
+          <p>
+            Il programma JavaScript sviluppato nella parte applicativa permette quindi di
+            inserire più opzioni e di visualizzare automaticamente il grafico del payoff totale
+            risultante dalla loro combinazione.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Applicazione interattiva</h2>
+
+        <p class="intro-text">
+          Inserire le opzioni che compongono il portafoglio e visualizzare
+          il payoff complessivo della strategia.
+        </p>
+
+        <div class="controls">
+          <div class="input-group">
+            <label for="optionType">Tipo opzione:</label>
+            <select id="optionType">
+              <option value="call">Call</option>
+              <option value="put">Put</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="positionType">Posizione:</label>
+            <select id="positionType">
+              <option value="long">Long</option>
+              <option value="short">Short</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="strikeValue">Strike price:</label>
+            <input type="number" id="strikeValue" value="100" />
+          </div>
+
+          <div class="input-group">
+            <label for="quantityValue">Quantità:</label>
+            <input type="number" id="quantityValue" value="1" min="1" />
+          </div>
+
+          <div class="button-row">
+            <button onclick="addOption()">Aggiungi opzione</button>
+            <button onclick="clearPortfolio()">Reset portafoglio</button>
+          </div>
+        </div>
+
+        <div class="portfolio-box">
+          <h3>Portafoglio corrente</h3>
+          <ul id="portfolioList"></ul>
+        </div>
+
+        <div class="chart-box">
+          <canvas id="portfolioChart"></canvas>
+        </div>
+      </section>
     </div>
   </div>
 
-  <div class="theory-text">
-    <p>
-      L'obiettivo dell'homework è generalizzare questi quattro casi base. Invece di
-      considerare una sola opzione, si considera un portafoglio formato da una lista
-      arbitraria di opzioni, ciascuna con il proprio tipo, strike price e quantità.
-    </p>
-
-    <p>
-      Il payoff globale della strategia è dato dalla somma dei payoff delle singole
-      opzioni considerate. In questo modo è possibile costruire strategie più complesse,
-      combinando call e put con strike e quantità differenti.
-    </p>
-  </div>
-
-  <div class="formula-box">
-    <div class="formula-main">
-      \( Payoff_{tot}(S_T)=\sum_{i=1}^{n} q_i \cdot Payoff_i(S_T) \)
-    </div>
-    <div class="formula-note">
-      Dove \(q_i\) rappresenta la quantità della \(i\)-esima opzione.
-    </div>
-  </div>
-
-  <div class="theory-text">
-    <p>
-      Il programma JavaScript sviluppato nella parte applicativa permette quindi di
-      inserire più opzioni e di visualizzare automaticamente il grafico del payoff totale
-      risultante dalla loro combinazione.
-    </p>
-  </div>
-</section>
+  <script src="hw8.js"></script>
+</body>
+</html>
